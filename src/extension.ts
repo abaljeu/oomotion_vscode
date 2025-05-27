@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import { actionList, registerAction } from './actions/action';
+import { registerAction } from './actions/action';
+import { actionList } from './actions/actionList';
 import { EditorData, EditorDataManager } from './editor/editordata';
 import { GlobalData } from './global/globaldata';
 import { getLanguageConfiguration } from './global/language';

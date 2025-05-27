@@ -1,17 +1,12 @@
 import * as vscode from "vscode"
 import { EditorData, State, StateName } from "../editor/editordata";
 import * as extension from "../extension"
+import { ActionSpec, ActionKey } from "./types";
 
-export type ActionKey = string | [string, string] | { key: string, mac: string };
+// Re-export types for backward compatibility
+export { ActionSpec, ActionKey } from "./types";
 
-export interface Action {
-    name: string,
-    title: string,
-    state?: StateName[],
-    key?: ActionKey[],
-    when?: string,
-    willBeRecord: boolean,
-    canGoBack: boolean,
+export interface Action extends ActionSpec {
     firstTime(editorData: EditorData, edit: vscode.TextEditorEdit): Promise<any>,
     repeat(editorData: EditorData, saved: any, edit: vscode.TextEditorEdit): Promise<void>;
 }
@@ -53,14 +48,7 @@ export function registerAction(ctx: vscode.ExtensionContext, action: Action) {
     ctx.subscriptions.push(disposable);
 }
 
-export interface SimpleAction {
-    name: string,
-    title: string,
-    state?: StateName[],
-    key?: ActionKey[],
-    when?: string,
-    willBeRecord: boolean,
-    canGoBack: boolean,
+export interface SimpleAction extends ActionSpec {
     callback(editorData: EditorData, state: State,  edit: vscode.TextEditorEdit): Promise<void>,
 }
 
@@ -75,22 +63,5 @@ export function SimpleActionMixin<T extends Constructor>(action: T) {
         }
         async repeat(editorData: EditorData, saved: any, edit: vscode.TextEditorEdit): Promise<void> {
             return this.callback(editorData, <State>saved, edit);
-        }
-
-    }
+        }    }
 }
-
-import { modeActions } from './mode';
-import { moveActions } from './move';
-import { findActions } from './find';
-import { insertActions } from './insert';
-import { undoActions } from './undo';
-import { yankActions } from "./yank";
-import { repeatActions } from "./history";
-import { selectActions } from "./select";
-import { evalActions } from './eval';
-import { miscActions } from './misc';
-import { easymotionActions } from "./easymotion";
-import { modifiersActions } from "./modifiers";
-
-export const actionList: Action[] = Array.prototype.concat(modeActions, moveActions, findActions, insertActions, undoActions, yankActions, repeatActions, selectActions, evalActions, miscActions, easymotionActions, modifiersActions);

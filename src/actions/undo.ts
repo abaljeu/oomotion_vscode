@@ -1,5 +1,6 @@
 import { TextEditor, TextEditorEdit } from "vscode";
-import { Action, ActionKey, SimpleActionMixin, SimpleAction } from "./action";
+import { ActionKey, ActionSpec } from "./types";
+import { Action, SimpleActionMixin, SimpleAction } from "./action";
 import * as editorData from "../editor/editordata";
 import * as mode from "../editor/modes/mode"
 import * as utils from "../utils";

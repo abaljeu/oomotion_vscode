@@ -1,9 +1,21 @@
 import assert = require('assert');      
 import * as fs                           from 'fs';                 
 import * as url                          from 'url';                
-import { actionList, Action, ActionKey } from './actions/action'    
+import { ActionKey, ActionSpec } from './actions/types'    
 import * as lodash                       from 'lodash';             
 import { State, StateName }              from './editor/editordata';
+
+// Import the actionList only when needed to avoid VS Code dependency in this script
+let actionList: ActionSpec[] | null = null;
+
+function getActionList(): ActionSpec[] {
+    if (!actionList) {
+        // Dynamic import to avoid loading VS Code modules during script execution
+        const { actionList: vsCodeActionList } = require('./actions/actionList');
+        actionList = vsCodeActionList;
+    }
+    return actionList!; // Non-null assertion since we just set it above
+}
 
 function getKey(key: ActionKey) {
     if(typeof key == 'string') {
@@ -19,7 +31,8 @@ function statesPredicate(states: StateName[]) {
 }
 
 export const packagegen = () => {
-	const action_keybindings = actionList.flatMap((x) => {
+	const actions = getActionList();
+	const action_keybindings = actions.flatMap((x) => {
 		if (x.key && x.key.length > 0) {
 			return x.key.map((k:any) => {
 				var obj: any = { "command": "oomotion-vscode." + x.name, ...getKey(k) }
@@ -172,7 +185,7 @@ export const packagegen = () => {
 		],
 		"main": "./out/extension.js",
 		"contributes": {
-			"commands": actionList.map((x) => ({ "command": "oomotion-vscode." + x.name, "title": `Oomotion: ` + x.title })),
+			"commands": actions.map((x) => ({ "command": "oomotion-vscode." + x.name, "title": `Oomotion: ` + x.title })),
 			"keybindings": Array.prototype.concat(action_keybindings, keyremap),
 			"configuration": {
 				"title": "Oomotion",
@@ -237,9 +250,8 @@ export const packagegen = () => {
 			"public-package-name": "https://github.com/user/repo.git#revision"
 		}
 	})
-
 	var namecheck = new Set<string>();
-	for(const a of actionList) {
+	for(const a of actions) {
 		assert(!namecheck.has(a.name), `duplicated name : ${a.name}`);
 		namecheck.add(a.name);
 	}
