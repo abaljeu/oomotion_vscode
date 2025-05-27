@@ -391,3 +391,13 @@ export function* intersectArray<T>(l1: T[], l2: T[]) {
         if(r1.done && r2.done) { return; }
     }
 }
+
+// Move all editor selections to the start of their respective ranges (Vim-like behavior)
+// objects: array of objects with a .selection property (e.g., from getTextObjects)
+// editor: vscode.TextEditor or compatible
+export function moveSelectionsToStart(editor: { selections: vscode.Selection[] }, objects: { selection: vscode.Selection }[]) {
+    editor.selections = objects.map(obj => {
+        const start = obj.selection.start;
+        return new vscode.Selection(start, start);
+    });
+}

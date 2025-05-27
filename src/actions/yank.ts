@@ -9,6 +9,7 @@ import * as extension from "../extension";
 import * as lodash from 'lodash';
 import { getNumArg } from "../editor/editordata";
 import * as word from '../editor/modes/word';
+import { moveSelectionsToStart } from '../utils';
 
 
 
@@ -99,10 +100,7 @@ class deleteAction implements SimpleAction {
         if (this.yank) { extension.globalData.setYank(obj.copy()); }
         obj.delete(this.range);
         // Move all cursors to the start of their original selection(s)
-        editorData.editor.selections = obj.map(x => {
-            const start = x.selection.start;
-            return new vscode.Selection(start, start);
-        });
+        moveSelectionsToStart(editorData.editor, obj);
         editorData.changeStateTo('NORMAL');
         editorData.changeModeTo(word);
     }
