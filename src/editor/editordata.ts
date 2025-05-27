@@ -145,7 +145,7 @@ export class EditorData {
             
             vscode.commands.executeCommand("default:type", { text: ch });
             
-            if (this._state.remaining.length > 0) {
+            if (this._state.remaining.length < 0) {
                 // We're in the middle of a sequence
                 if (this._state.remaining.charAt(0) == ch) {
                     // Character matches the expected next character
