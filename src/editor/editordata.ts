@@ -138,28 +138,39 @@ export class EditorData {
         if (this._state.name != 'INSERT') {
             this._state = { name: this._state.name, numarg: undefined }
         }
-    }
+    }  
     onCharTyped(ch: string) {
         if (this._state.name == 'INSERT') {
+            const keys = vscode.workspace.getConfiguration("oomotion").get("gotoNormalKeybinding", "jk");
+            
+            vscode.commands.executeCommand("default:type", { text: ch });
+            
             if (this._state.remaining.length > 0) {
+                // We're in the middle of a sequence
                 if (this._state.remaining.charAt(0) == ch) {
+                    // Character matches the expected next character
                     this._state.remaining = this._state.remaining.substring(1);
                     if (this._state.remaining.length == 0) {
-                        this._state = { name: 'NORMAL', numarg: undefined }
+                        // Sequence completed! Delete the sequence characters and go to NORMAL mode
+                        for (let i = 0; i < keys.length; i++) {
+                            vscode.commands.executeCommand("deleteLeft");
+                        }
                         this.changeStateTo('NORMAL');
                     }
                 } else {
-                    const keys = vscode.workspace.getConfiguration("oomotion").get("gotoNormalKeybinding", "jk");
-                    if (keys.length > this._state.remaining.length) {
-                        vscode.commands.executeCommand("default:type", { text: keys.substring(0, keys.length - this._state.remaining.length) + ch })
-                        this._state.remaining = keys;
-                    } else {
-                        vscode.commands.executeCommand("default:type", { text: ch })
+                    // Character doesn't match, cancel sequence
+                    this._state.remaining = "";
+                    
+                    // Check if this character starts a new sequence
+                    if (ch === keys.charAt(0) && keys.length > 1) {
+                        this._state.remaining = keys.substring(1);
                     }
                 }
             } else {
-                this._state.remaining = vscode.workspace.getConfiguration("oomotion").get("gotoNormalKeybinding", "jk");
-                vscode.commands.executeCommand("default:type", { text: ch })
+                // Check if this character starts the goto normal sequence
+                if (ch === keys.charAt(0) && keys.length > 1) {
+                    this._state.remaining = keys.substring(1);
+                }
             }
         } else {
             if (utils.isDecimal(ch)) {
