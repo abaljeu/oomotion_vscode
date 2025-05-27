@@ -97,7 +97,12 @@ class deleteAction implements SimpleAction {
     async callback(editorData: editorData.EditorData, state: editorData.State): Promise<void> {
         const { obj } = editorData.editor.getTextObjects(editorData.mode);
         if (this.yank) { extension.globalData.setYank(obj.copy()); }
-        obj.delete(this.range); 
+        obj.delete(this.range);
+        // Move all cursors to the start of their original selection(s)
+        editorData.editor.selections = obj.map(x => {
+            const start = x.selection.start;
+            return new vscode.Selection(start, start);
+        });
         editorData.changeStateTo('NORMAL');
         editorData.changeModeTo(word);
     }
