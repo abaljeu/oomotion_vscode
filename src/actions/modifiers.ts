@@ -1,4 +1,3 @@
-
 import { TextEditor, TextEditorEdit } from "vscode";
 import { Action, ActionKey, SimpleActionMixin, SimpleAction } from "./action";
 import * as editorData from "../editor/editordata";
@@ -138,6 +137,6 @@ class ModifyAction implements Action {
     }
 }
 
-export default [
+export const modifiersActions = [
     new ModifyAction(["m"]),
 ]

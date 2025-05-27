@@ -1,4 +1,3 @@
-
 import CoffeeScript from "coffeescript";
 import { TextEditor, TextEditorEdit } from "vscode";
 import { Action, ActionKey, SimpleActionMixin, SimpleAction } from "./action";
@@ -57,7 +56,7 @@ class EvalAction implements Action {
     }
 }
 
-export default [
+export const evalActions = [
     new EvalAction("Replace", ['.'], (o, r) => o.replace(r), "$."),
     new EvalAction("Insert Before", ['shift+3'], (o, r) => o.paste('left', 'auto', r)),
     new EvalAction("Append After", ['shift+4'], (o, r) => o.paste('right', 'auto', r)),

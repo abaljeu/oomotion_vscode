@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import { TextEditor, TextEditorEdit } from "vscode";
 import { Action, ActionKey, SimpleActionMixin, SimpleAction } from "./action";
 import * as editorData from "../editor/editordata";
@@ -55,7 +49,7 @@ class redoAction implements SimpleAction {
 const UndoAction = SimpleActionMixin(undoAction);
 const RedoAction = SimpleActionMixin(redoAction);
 
-export default [
+export const undoActions = [
     new UndoAction(['u']),
     new RedoAction(['shift+u']),
 ]

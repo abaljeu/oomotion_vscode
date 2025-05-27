@@ -1,4 +1,3 @@
-
 import { TextEditor, TextEditorEdit } from "vscode";
 import { Action, ActionKey, SimpleActionMixin, SimpleAction } from "./action";
 import * as editorData from "../editor/editordata";
@@ -77,7 +76,7 @@ const NextAction = SimpleActionMixin(nextAction);
 import * as line from "../editor/modes/line"
 import { add } from "lodash";
 
-export default [
+export const findActions = [
     new FindAction('left', ['s']),
     new FindAction('right', ['f']),
     new NextAction(false, 'right', ['n']),

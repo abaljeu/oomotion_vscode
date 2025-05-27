@@ -169,7 +169,7 @@ const ChangeAction = SimpleActionMixin(changeAction);
 const ReplaceAction = SimpleActionMixin(replaceAction);
 import * as line from "../editor/modes/line"
 
-export default [
+export const yankActions = [
     new YankAction(['y']),
     new YankAction(['shift+Y'], line),
     new PasteAction('right', 'auto', ['p']),

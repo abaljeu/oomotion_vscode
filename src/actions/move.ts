@@ -1,8 +1,3 @@
-
-
-
-
-
 import { TextEditor, TextEditorEdit } from "vscode";
 import { Action, ActionKey, SimpleActionMixin, SimpleAction } from "./action";
 import * as editorData from "../editor/editordata";
@@ -108,7 +103,7 @@ import * as character from '../editor/modes/char';
 import * as line from '../editor/modes/line';
 import { getNumArg } from "../editor/editordata";
 
-export default [
+export const moveActions = [
     new MoveAction('left', ['h', 'left']),
     new MoveAction('right', ['l', 'right']),
     new MoveAction('down', ['j', 'down']),

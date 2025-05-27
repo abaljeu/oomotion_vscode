@@ -1,6 +1,3 @@
-
-
-
 import { TextEditor, TextEditorEdit } from "vscode";
 import { Action, ActionKey, SimpleActionMixin, SimpleAction } from "./action";
 import * as editorData from "../editor/editordata";
@@ -51,7 +48,7 @@ import * as lineword   from '../editor/modes/lineword';
 import * as bigword    from '../editor/modes/bigword';    
 import * as smallword  from '../editor/modes/smallword';  
 
-export default [
+export const modeActions = [
     new ModeCollapse(char, [ "shift+6"]            ),
     new ModeCollapse(line, [ "x" ]           ),
     new ModeCollapse(word, [ "w" ], smallword),

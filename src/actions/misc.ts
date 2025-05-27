@@ -66,7 +66,7 @@ class AlignAction implements Action {
 
 const CenterAction = SimpleActionMixin(centerAction);
 
-export default [
+export const miscActions = [
     new CenterAction(['space space']),
     new AlignAction(['=']),
 ]

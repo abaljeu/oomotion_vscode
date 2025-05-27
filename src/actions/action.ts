@@ -80,17 +80,17 @@ export function SimpleActionMixin<T extends Constructor>(action: T) {
     }
 }
 
-import modeActions from './mode';
-import moveActions from './move';
-import findActions from './find';
-import insertActions from './insert';
-import undoActions from './undo'
-import yankActions from "./yank";
-import repeatActions from "./history";
-import selectActions from "./select";
-import evalActions from './eval';
-import miscActions from './misc';
-import easymotionActions from "./easymotion";
-import modifiersActions from "./modifiers";
+import { modeActions } from './mode';
+import { moveActions } from './move';
+import { findActions } from './find';
+import { insertActions } from './insert';
+import { undoActions } from './undo';
+import { yankActions } from "./yank";
+import { repeatActions } from "./history";
+import { selectActions } from "./select";
+import { evalActions } from './eval';
+import { miscActions } from './misc';
+import { easymotionActions } from "./easymotion";
+import { modifiersActions } from "./modifiers";
 
 export const actionList: Action[] = Array.prototype.concat(modeActions, moveActions, findActions, insertActions, undoActions, yankActions, repeatActions, selectActions, evalActions, miscActions, easymotionActions, modifiersActions);

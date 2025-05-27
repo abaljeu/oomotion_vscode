@@ -11,7 +11,7 @@
 			"request": "launch",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",
-				"--disable-extensions"
+				"--user-data-dir=${workspaceFolder}/.vscode-oomotion-profile"
 			],
 			"outFiles": [
 				"${workspaceFolder}/out/**/*.js"

@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import { TextEditor, TextEditorEdit } from "vscode";
 import { Action, ActionKey, SimpleActionMixin, SimpleAction } from "./action";
 import * as editorData from "../editor/editordata";
@@ -58,7 +52,7 @@ class escapeAction implements SimpleAction {
 const SelectStateAction = SimpleActionMixin(selectStateAction);
 const EscapeAction = SimpleActionMixin(escapeAction);
 
-export default [
+export const selectActions = [
     new SelectStateAction(['v'], "SELECT"),
     new SelectStateAction([], "NORMAL"),
     new SelectStateAction([], "INSERT"),

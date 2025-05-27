@@ -63,7 +63,7 @@ const InsertAction = SimpleActionMixin(insertAction);
 
 import * as line from "../editor/modes/line";
 import { resolve } from "path";
-export default [
+export const insertActions = [
     new InsertAction('left', 'inner', ['i']),
     new InsertAction('left', 'new', ['alt+i']),
     new InsertAction('right', 'inner', ['a']),

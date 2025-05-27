@@ -1,8 +1,3 @@
-
-
-
-
-
 import { TextEditor, TextEditorEdit, Selection, Range, Position } from "vscode";
 import { Action, ActionKey, SimpleActionMixin, SimpleAction } from "./action";
 import * as editorData from "../editor/editordata";
@@ -85,6 +80,6 @@ const twoCharList = ["fj","jf","fd","df","fk","jd","dj","kf","fs","jk","kj","sf"
 
 const EasyMotionAction = SimpleActionMixin(easyMotionAction);
 
-export default [
+export const easymotionActions = [
     new EasyMotionAction(["e"]),
 ];

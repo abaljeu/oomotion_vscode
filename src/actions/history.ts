@@ -61,7 +61,7 @@ class GobackAction implements Action {
     }
 }
 
-export default [
+export const repeatActions = [
     new RepeatAction(['enter']      ),
     new GobackAction(['shift+enter']),
 ]
