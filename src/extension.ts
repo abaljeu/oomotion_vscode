@@ -27,6 +27,13 @@ export function activate(context: vscode.ExtensionContext) {
 	onDidChangeActiveTextEditor(vscode.window.activeTextEditor);
 	vscode.window.onDidChangeActiveTextEditor(onDidChangeActiveTextEditor);
 	console.log(getLanguageConfiguration("typescript"));
+	
+	// Register a command to show all decoration examples
+	const showExamplesCommand = vscode.commands.registerCommand('oomotion.showDecorationExamples', () => {
+		const decorationExamples = require('./editor/decorationExamples');
+		decorationExamples.showAllDecorationExamples(context);
+	});
+	context.subscriptions.push(showExamplesCommand);
 	let intercept_cmd = vscode.commands.registerCommand('type', (ch: { text: string }) => {
 		editorData.map_or_else(x => {
 			x.onCharTyped(ch.text);
