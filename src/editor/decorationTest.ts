@@ -41,16 +41,13 @@ export function createBoxDecoration(
  * @param editor Active text editor
  */
 export function testBoxDecoration(editor: vscode.TextEditor): vscode.TextEditorDecorationType {
-    // Use either the current selection or hardcoded positions
-    if (!editor.selection.isEmpty) {
-        // Use the current selection as the box boundaries
-        return createBoxDecoration(editor, editor.selection.start, editor.selection.end);
-    } else {
-        // Create a decoration box from line 5, column 4 to line 10, column 20 (fallback)
-        const start = new vscode.Position(5, 4);
-        const end = new vscode.Position(10, 20);
-        return createBoxDecoration(editor, start, end);
-    }
+    // Define the selection to use for decoration
+    const selection = !editor.selection.isEmpty
+        ? { start: editor.selection.start, end: editor.selection.end } // Use current selection
+        : { start: new vscode.Position(5, 4), end: new vscode.Position(10, 20) }; // Fallback to default
+    
+    // Apply the box decoration
+    return createBoxDecoration(editor, selection.start, selection.end);
 }
 
 /**
