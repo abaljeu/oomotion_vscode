@@ -38,3 +38,6 @@ The architecture is centered around a few key concepts:
 3. **Performance Optimization**
    - Implement caching mechanisms for frequently accessed Tree-sitter nodes
    - Optimize the selection highlight rendering for large files
+
+
+[[Core_components.md]]

@@ -283,6 +283,10 @@
       {
         "command": "oomotion-vscode.applyModifiersToSelection",
         "title": "Oomotion: Apply Modifiers to Selection"
+      },
+      {
+        "command": "oomotion-vscode.testBoxDecoration",
+        "title": "Oomotion: Test Box Decoration"
       }
     ],
     "keybindings": [
@@ -759,6 +763,12 @@
         "key": "m",
         "mac": "m",
         "when": "editorTextFocus && oomotion-vscode.state == 'SELECT' || editorTextFocus && oomotion-vscode.state == 'NORMAL'"
+      },
+      {
+        "command": "oomotion-vscode.testBoxDecoration",
+        "key": "alt+b",
+        "mac": "alt+b",
+        "when": "editorTextFocus && oomotion-vscode.state == 'NORMAL' || editorTextFocus && oomotion-vscode.state == 'SELECT'"
       },
       {
         "command": "editor.action.revealDefinition",

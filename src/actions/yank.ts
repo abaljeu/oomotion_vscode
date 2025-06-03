@@ -99,8 +99,9 @@ class deleteAction implements SimpleAction {
         const { obj } = editorData.editor.getTextObjects(editorData.mode);
         if (this.yank) { extension.globalData.setYank(obj.copy()); }
         obj.delete(this.range);
-        // Move all cursors to the start of their original selection(s)
-        moveSelectionsToStart(editorData.editor, obj);
+    // Move all cursors to the start of their original selection(s)
+        // Use double type assertion to bypass TypeScript's readonly check
+        moveSelectionsToStart(editorData.editor as unknown as { selections: vscode.Selection[] }, obj.arr);
         editorData.changeStateTo('NORMAL');
         editorData.changeModeTo(word);
     }

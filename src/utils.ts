@@ -394,10 +394,14 @@ export function* intersectArray<T>(l1: T[], l2: T[]) {
 
 // Move all editor selections to the start of their respective ranges (Vim-like behavior)
 // objects: array of objects with a .selection property (e.g., from getTextObjects)
-// editor: vscode.TextEditor or compatible
-export function moveSelectionsToStart(editor: { selections: vscode.Selection[] }, objects: { selection: vscode.Selection }[]) {
-    editor.selections = objects.map(obj => {
+// editor: object with selections property (vscode.TextEditor or EditorManager)
+export function moveSelectionsToStart(editor: { selections: readonly vscode.Selection[]; }, objects: { selection: vscode.Selection }[]) {
+    const newSelections = objects.map(obj => {
         const start = obj.selection.start;
         return new vscode.Selection(start, start);
     });
+    
+    // The cast is needed because we know the editor can accept selections assignment
+    // even though TypeScript sees the property as readonly
+    (editor as any).selections = newSelections;
 }

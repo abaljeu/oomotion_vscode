@@ -1,4 +1,4 @@
-// For comprehensive documentation and codebase analysis, see docs/oomotion_overview.md
+// For comprehensive documentation and codebase analysis, see [[docs/oomotion_overview.md]]
 
 import assert = require('assert');      
 import * as fs                           from 'fs';                 
