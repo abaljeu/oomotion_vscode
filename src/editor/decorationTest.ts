@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 /**
- * Creates a visual box decoration around a specified text range
+ * Creates a visual box decoration around a specified text range using CSS borders
  * @param editor The active text editor
  * @param start Start position of the box
  * @param end End position of the box
@@ -16,92 +16,21 @@ export function createBoxDecoration(
         const temp = start;
         start = end;
         end = temp;
-    }    // Create the decoration type with styling
+    }
+    
+    // Create the decoration type with CSS border styling
     const boxDecoration = vscode.window.createTextEditorDecorationType({
+        border: '1px solid red',
         borderRadius: '2px',
         backgroundColor: 'rgba(255, 0, 0, 0.05)',
         overviewRulerColor: 'red',
         overviewRulerLane: vscode.OverviewRulerLane.Right
     });
 
-    // Array to hold all decoration ranges
-    const decorations: vscode.DecorationOptions[] = [];
-
-    // Handle single line case
-    if (start.line === end.line) {
-        const range = new vscode.Range(start, end);
-        decorations.push({ range });
-        editor.setDecorations(boxDecoration, decorations);
-        return boxDecoration;
-    }
-
-    // Calculate max column for consistent visuals
-    let maxColumn = 0;
-    for (let i = start.line; i <= end.line; i++) {
-        const lineLength = editor.document.lineAt(i).text.length;
-        maxColumn = Math.max(maxColumn, lineLength);
-    }
-
-    // Create top border (start line)
-    const startLineEndPos = new vscode.Position(
-        start.line, 
-        Math.max(editor.document.lineAt(start.line).text.length, maxColumn)
-    );
-    const topRange = new vscode.Range(start, startLineEndPos);
-      decorations.push({ 
-        range: topRange,
-        renderOptions: {
-            before: {
-                contentText: '┌',
-                color: '#ff0000',
-            },
-            after: {
-                contentText: '┐',
-                color: '#ff0000',
-            }
-        }
-    });
-
-    // Middle lines with vertical borders
-    for (let i = start.line + 1; i < end.line; i++) {
-        const lineLength = editor.document.lineAt(i).text.length;
-        const lineStart = new vscode.Position(i, 0);
-        const lineEnd = new vscode.Position(i, lineLength);
-        const middleRange = new vscode.Range(lineStart, lineEnd);
-        
-        decorations.push({
-            range: middleRange,
-            renderOptions: {
-                before: {
-                    contentText: '│',
-                    color: '#ff0000',
-                },
-                after: {
-                    contentText: '│',
-                    color: '#ff0000',
-                }
-            }
-        });
-    }
-
-    // Create bottom border (end line)
-    const endLineStartPos = new vscode.Position(end.line, 0);
-    const bottomRange = new vscode.Range(endLineStartPos, end);
-      decorations.push({ 
-        range: bottomRange,
-        renderOptions: {
-            before: {
-                contentText: '└',
-                color: '#ff0000',
-            },
-            after: {
-                contentText: '┘',
-                color: '#ff0000',
-            }
-        }
-    });
-
-    // Apply all decorations
+    // Create a single decoration range from start to end
+    const range = new vscode.Range(start, end);
+    const decorations = [{ range }];
+      // Apply the decoration to the editor
     editor.setDecorations(boxDecoration, decorations);
     
     return boxDecoration;

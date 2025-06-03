@@ -287,6 +287,10 @@
       {
         "command": "oomotion-vscode.testBoxDecoration",
         "title": "Oomotion: Test Box Decoration"
+      },
+      {
+        "command": "oomotion-vscode.testCssBoxDecoration",
+        "title": "Oomotion: Test CSS Box Decoration"
       }
     ],
     "keybindings": [
@@ -766,8 +770,14 @@
       },
       {
         "command": "oomotion-vscode.testBoxDecoration",
-        "key": "alt+b",
-        "mac": "alt+b",
+        "key": "b",
+        "mac": "b",
+        "when": "editorTextFocus && oomotion-vscode.state == 'NORMAL' || editorTextFocus && oomotion-vscode.state == 'SELECT'"
+      },
+      {
+        "command": "oomotion-vscode.testCssBoxDecoration",
+        "key": "c",
+        "mac": "c",
         "when": "editorTextFocus && oomotion-vscode.state == 'NORMAL' || editorTextFocus && oomotion-vscode.state == 'SELECT'"
       },
       {

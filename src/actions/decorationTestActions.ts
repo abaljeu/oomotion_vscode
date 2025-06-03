@@ -9,7 +9,7 @@ import { testBoxDecoration } from "../editor/decorationTest";
 /**
  * Action to test the box decoration feature
  */
-class boxDecorationTestAction implements SimpleAction {
+class BoxDecorationTestAction implements SimpleAction {
     name: string;
     title: string;
     key: ActionKey[];
@@ -48,9 +48,9 @@ class boxDecorationTestAction implements SimpleAction {
 }
 
 // Create a mixin of the action
-const BoxDecorationTestAction = SimpleActionMixin(boxDecorationTestAction);
+const boxDecorationTestAction = SimpleActionMixin(BoxDecorationTestAction);
 
 // Export the decoration test actions
 export const decorationTestActions = [
-    new BoxDecorationTestAction(['alt+b']), // Alt+B to trigger the test
+    new boxDecorationTestAction(['b']), // 'b' key to trigger the test
 ];

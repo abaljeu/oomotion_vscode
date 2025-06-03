@@ -14,7 +14,8 @@ import { evalActions } from './eval';
 import { miscActions } from './misc';
 import { easymotionActions } from "./easymotion";
 import { modifiersActions } from "./modifiers";
-import { decorationTestActions } from "./decorationTest";
+import { decorationTestActions } from "./decorationTestActions";
+import { cssBoxDecorationTestActions } from "./cssBoxDecorationActions";
 
 export const actionList: Action[] = Array.prototype.concat(
     modeActions, 
@@ -24,10 +25,10 @@ export const actionList: Action[] = Array.prototype.concat(
     undoActions, 
     yankActions, 
     repeatActions, 
-    selectActions, 
-    evalActions, 
+    selectActions,    evalActions, 
     miscActions, 
     easymotionActions, 
     modifiersActions,
-    decorationTestActions
+    decorationTestActions,
+    cssBoxDecorationTestActions
 );
