@@ -1,5 +1,8 @@
 import * as vscode from 'vscode';
 
+// Track all active decorations to ensure proper cleanup
+const activeBoxDecorations: vscode.TextEditorDecorationType[] = [];
+
 /**
  * Creates a decoration type with specified border styles and common properties
  * @param borderStyle CSS border style specification
@@ -8,11 +11,9 @@ import * as vscode from 'vscode';
 function createBorderDecoration(borderStyle: string): vscode.TextEditorDecorationType {
     return vscode.window.createTextEditorDecorationType({
         border: '1px solid',
-        borderColor: 'red',
-        borderStyle: borderStyle,
-        borderRadius: '3px',
-        backgroundColor: 'rgba(255, 0, 0, 0.05)'
-    });
+        borderColor: 'blue',
+        borderStyle: borderStyle
+        });
 }
 
 /**
@@ -32,18 +33,11 @@ export function createCssBoxDecoration(
         start = end;
         end = temp;
     }
-    
-    // Single line case - all borders in one decoration
-    if (start.line === end.line) {
-        const decoration = createBorderDecoration('solid');
-        editor.setDecorations(decoration, [new vscode.Range(start, end)]);
-        return decoration;
-    }
-    
-    // Create ranges for the different parts of multi-line selection
+
+    // Create ranges for the different parts of the decoration
     const firstLineRange = new vscode.Range(start, new vscode.Position(start.line, Number.MAX_SAFE_INTEGER));
     const lastLineRange = new vscode.Range(new vscode.Position(end.line, 0), end);
-    
+
     // For middle lines (if any)
     const middleLineRanges: vscode.Range[] = [];
     for (let i = start.line + 1; i < end.line; i++) {
@@ -53,20 +47,36 @@ export function createCssBoxDecoration(
         ));
     }
 
+    // Adjust decorations for single-line or sub-line selections
+    const exactRange = new vscode.Range(start, end);
+
     // Create decorations for different parts of the box
     const decorations = {
-        top: createBorderDecoration('solid none solid solid'),     // top, right, bottom, left
-        middle: createBorderDecoration('none solid none solid'),   // top, right, bottom, left
-        bottom: createBorderDecoration('none solid solid solid')   // top, right, bottom, left
+        left: createBorderDecoration('solid none none solid'),      // left border only
+        right: createBorderDecoration('none solid none none'),     // right border only
+        topBottom: createBorderDecoration('solid none solid none') // top and bottom borders
     };
 
     // Apply decorations
-    editor.setDecorations(decorations.top, [firstLineRange]);
-    editor.setDecorations(decorations.middle, middleLineRanges);
-    editor.setDecorations(decorations.bottom, [lastLineRange]);
+    if (start.line === end.line) {
+        // Single-line or sub-line selection
+        editor.setDecorations(decorations.left, [exactRange]);
+        editor.setDecorations(decorations.right, [exactRange]);
+        editor.setDecorations(decorations.topBottom, [exactRange]);
+    } else {
+        // Multi-line selection
+        editor.setDecorations(decorations.left, [firstLineRange]);
+        editor.setDecorations(decorations.right, [lastLineRange]);
+        editor.setDecorations(decorations.topBottom, [firstLineRange, ...middleLineRanges, lastLineRange]);
+    }
 
-    // Return the top decoration as a representative (all will need to be disposed)
-    return decorations.top;
+    // Add all created decorations to the global tracking array
+    activeBoxDecorations.push(decorations.left);
+    activeBoxDecorations.push(decorations.right);
+    activeBoxDecorations.push(decorations.topBottom);
+
+    // Return the left decoration as a representative (all will be disposed by activeBoxDecorations)
+    return decorations.left;
 }
 
 /**
@@ -74,13 +84,46 @@ export function createCssBoxDecoration(
  * @param editor Active text editor
  */
 export function testCssBoxDecoration(editor: vscode.TextEditor): vscode.TextEditorDecorationType {
+    // Clean up all previous decorations using our centralized function
+    disposeAllDecorations();
+
     // Define the selection to use for decoration
     const selection = !editor.selection.isEmpty
         ? { start: editor.selection.start, end: editor.selection.end } // Use current selection
         : { start: new vscode.Position(5, 4), end: new vscode.Position(10, 20) }; // Fallback to default
     
     // Apply the box decoration
-    return createCssBoxDecoration(editor, selection.start, selection.end);
+    const decoration = createCssBoxDecoration(editor, selection.start, selection.end);
+    
+    return decoration;
+}
+
+/**
+ * Disposes all active box decorations
+ */
+function disposeAllDecorations(): void {
+    // Make a copy of the array to avoid issues during iteration
+    const decorations = [...activeBoxDecorations];
+    
+    // Clear the tracking array
+    activeBoxDecorations.length = 0;
+    
+    // Dispose each decoration
+    decorations.forEach(decoration => {
+        try {
+            decoration.dispose();
+        } catch (e) {
+            // Ignore errors if decoration was already disposed
+        }
+    });
+}
+
+/**
+ * Public function to clean up all box decorations
+ * Can be called from other modules to ensure all decorations are removed
+ */
+export function cleanupAllBoxDecorations(): void {
+    disposeAllDecorations();
 }
 
 /**

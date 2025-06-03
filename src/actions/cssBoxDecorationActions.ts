@@ -4,7 +4,7 @@ import { SimpleAction, SimpleActionMixin } from "./action";
 import * as editorData from "../editor/editordata";
 import * as vscode from "vscode";
 import * as lodash from 'lodash';
-import { testCssBoxDecoration } from "../editor/cssBoxDecoration";
+import { testCssBoxDecoration, cleanupAllBoxDecorations } from "../editor/cssBoxDecoration";
 
 /**
  * Action to test the CSS box decoration feature
@@ -15,7 +15,7 @@ class CssBoxDecorationTestAction implements SimpleAction {
     key: ActionKey[];
     willBeRecord: boolean = false;
     canGoBack: boolean = false;
-    state: editorData.StateName[] = ['NORMAL', 'SELECT'];
+    state: undefined = undefined;  // Allow the action in any state
     when = undefined;
     private activeDecorations: vscode.TextEditorDecorationType[] = [];
 
@@ -23,18 +23,14 @@ class CssBoxDecorationTestAction implements SimpleAction {
         this.name = "testCssBoxDecoration";
         this.title = "Test CSS Box Decoration";
         this.key = key;
-    }
-    
-    async callback(data: editorData.EditorData, state: editorData.State): Promise<void> {
-        // Clean up previous decorations to avoid cluttering the editor
-        this.activeDecorations.forEach(decoration => {
-            decoration.dispose();
-        });
+    }    async callback(data: editorData.EditorData, state: editorData.State): Promise<void> {
+        // Clean up all box decorations using the centralized cleanup function
+        cleanupAllBoxDecorations();
         this.activeDecorations = [];
         
-        // Apply the test CSS box decoration and store it for cleanup
+        // Apply the test CSS box decoration
         const decoration = testCssBoxDecoration(data.editor.editor);
-        this.activeDecorations.push(decoration);
+        // We don't need to track this decoration separately anymore since it's tracked in cssBoxDecoration.ts
         
         // Get the positions to provide a meaningful message
         const selection = data.editor.editor.selection;
@@ -54,5 +50,5 @@ const cssBoxDecorationTestAction = SimpleActionMixin(CssBoxDecorationTestAction)
 
 // Export the CSS decoration test actions
 export const cssBoxDecorationTestActions = [
-    new cssBoxDecorationTestAction(['c']), // 'c' key to trigger the CSS-based test
+    new cssBoxDecorationTestAction(['alt+b']), // 'alt+b' key to trigger the CSS-based test
 ];

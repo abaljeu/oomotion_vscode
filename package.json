@@ -285,10 +285,6 @@
         "title": "Oomotion: Apply Modifiers to Selection"
       },
       {
-        "command": "oomotion-vscode.testBoxDecoration",
-        "title": "Oomotion: Test Box Decoration"
-      },
-      {
         "command": "oomotion-vscode.testCssBoxDecoration",
         "title": "Oomotion: Test CSS Box Decoration"
       }
@@ -769,16 +765,9 @@
         "when": "editorTextFocus && oomotion-vscode.state == 'SELECT' || editorTextFocus && oomotion-vscode.state == 'NORMAL'"
       },
       {
-        "command": "oomotion-vscode.testBoxDecoration",
-        "key": "b",
-        "mac": "b",
-        "when": "editorTextFocus && oomotion-vscode.state == 'NORMAL' || editorTextFocus && oomotion-vscode.state == 'SELECT'"
-      },
-      {
         "command": "oomotion-vscode.testCssBoxDecoration",
-        "key": "c",
-        "mac": "c",
-        "when": "editorTextFocus && oomotion-vscode.state == 'NORMAL' || editorTextFocus && oomotion-vscode.state == 'SELECT'"
+        "key": "alt+b",
+        "mac": "alt+b"
       },
       {
         "command": "editor.action.revealDefinition",
