@@ -76,7 +76,7 @@ function shrinkOnIndent(doc: vscode.TextDocument, linestart: number, lineend: nu
     }
 }
 
-export class SelectedLineTree extends line.SelectedLines implements mode.SelectedTextObj {
+export class SelectedLineTree extends line.SelectedLines implements mode.BaseSelectedTextObj {
     constructor(editor: EditorManager, linestart: number, lineend: number, isrev: boolean) {
         
         super(editor, linestart, lineend, isrev)

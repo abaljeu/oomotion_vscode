@@ -72,7 +72,7 @@ export function isLineIndentOrUndent(doc: vscode.TextDocument, line:number) {
     return isLineIndent(doc, line) || isLineUnindent(doc, line);
 }
 
-export class SelectedLines implements mode.SelectedTextObj {
+export class SelectedLines implements mode.BaseSelectedTextObj {
     editor: EditorManager;
     linestart: number;
     lineend: number;

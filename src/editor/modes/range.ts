@@ -40,9 +40,9 @@ function positionMax(p1: vscode.Position, p2: vscode.Position) {
 
 export class SelectedRange extends mode.BaseSelectedTextObj {
     mode: mode.SelectionMode;
-    active: mode.SelectedTextObj;
-    anchor: mode.SelectedTextObj;
-    constructor(mode: mode.SelectionMode, active: mode.SelectedTextObj, anchor: mode.SelectedTextObj) {
+    active: mode.BaseSelectedTextObj;
+    anchor: mode.BaseSelectedTextObj;
+    constructor(mode: mode.SelectionMode, active: mode.BaseSelectedTextObj, anchor: mode.BaseSelectedTextObj) {
         super();
         this.mode = mode;
         this.active = active;
@@ -120,16 +120,17 @@ export class SelectedRange extends mode.BaseSelectedTextObj {
     findStartWith(direction: mode.DirectionHorizontal, ch: string, select_mode: boolean): mode.SelectedTextObj {
         if(!select_mode) { return this.active.findStartWith(direction, ch, false); }
         return new SelectedRange(this.mode, this.active.findStartWith(direction, ch, false), this.anchor);
-    }
-    findIdent(direction: mode.DirectionHorizontal, select_mode: boolean): mode.SelectedTextObj {
+    }    findIdent(direction: mode.DirectionHorizontal, select_mode: boolean): mode.SelectedTextObj {
         if(!select_mode) { return this.active.findIdent(direction, false); }
         return new SelectedRange(this.mode, this.findIdent(direction, false), this.anchor);
-    }    leftward(): mode.SelectedTextObj {
-        return (this.active as mode.BaseSelectedTextObj).leftward();
+    }
+    
+    leftward(): mode.SelectedTextObj {
+        return this.active.leftward();
     }
 
     rightward(): mode.SelectedTextObj {
-        return (this.active as mode.BaseSelectedTextObj).rightward();
+        return this.active.rightward();
     }
 
 }

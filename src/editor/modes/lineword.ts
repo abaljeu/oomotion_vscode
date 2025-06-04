@@ -47,7 +47,7 @@ function nextTreeNode(doc: vscode.TextDocument, lineend: number): { start: numbe
     return expandToObj(doc, lineend, lineend);
 }
 
-export class SelectedLineWord extends line.SelectedLines implements mode.SelectedTextObj {
+export class SelectedLineWord extends line.SelectedLines implements mode.BaseSelectedTextObj {
     constructor(editor: EditorManager, linestart: number, lineend: number, isrev: boolean) {
         
         super(editor, linestart, lineend, isrev)

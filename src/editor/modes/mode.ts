@@ -37,6 +37,10 @@ export interface SelectedTextObj extends TextObj {
     addCursor(direct: Direction): SelectedTextObj | undefined;
     moveSwap(direct: DirectionHorizontal, count: number): [vscode.Range, string][];
     easyMotionList(direct: DirectionHorizontal) : {tag: vscode.Selection, result: SelectedTextObj}[];
+
+    // Movement helper methods for subclasses - not part of public interface
+     leftward(): SelectedTextObj;
+     rightward(): SelectedTextObj;
 }
 
 export class PlainText extends String implements TextObj {
@@ -234,7 +238,7 @@ export abstract class BaseSelectedTextObj implements SelectedTextObj {
     abstract addCursor(direct: Direction): SelectedTextObj | undefined;
     abstract moveSwap(direct: DirectionHorizontal, count: number): [vscode.Range, string][];
     abstract easyMotionList(direct: DirectionHorizontal): {tag: vscode.Selection, result: SelectedTextObj}[];
-    
+
     // Movement helper methods for subclasses - not part of public interface
     abstract leftward(): SelectedTextObj;
     abstract rightward(): SelectedTextObj;
