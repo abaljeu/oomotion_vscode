@@ -154,9 +154,7 @@ export class TreeSitterNode extends mode.BaseSelectedTextObj {
         const svd = this.savedNode;
         const n = iterateLastChild(ps, n => n.startIndex <= svd.startIndex && !nodeContains(svd, n)) || ps;
         return new TreeSitterNode(this.editor, n, 'left', this.savedNode);
-    }
-
-    rightward(): mode.SelectedTextObj {
+    }    rightward(): mode.SelectedTextObj {
         const ns = nextSibling(this.node);
         if (!ns) { return this; }
         if (nodeRealContains(this.node, this.savedNode)) {
@@ -167,32 +165,34 @@ export class TreeSitterNode extends mode.BaseSelectedTextObj {
         return new TreeSitterNode(this.editor, n, 'right', this.savedNode);
     }
 
-    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
+    downward(): mode.SelectedTextObj {
+        if (nodeRealContains(this.node, this.savedNode)) {
+            const n = this.node.children.find(n => n.endIndex > this.savedNode.startIndex)
+            if (n) { return new TreeSitterNode(this.editor, n, this.direction, this.savedNode); }
+        }
+        const collapse = this.direction == 'left' ? this.node.firstNamedChild || this.node.firstChild :
+            this.node.lastNamedChild || this.node.lastChild;
+        if (collapse) { return new TreeSitterNode(this.editor, collapse, this.direction); }
+        return this;
+    }
+
+    upward(): mode.SelectedTextObj {
+        const p = this.node.parent;
+        if (!p) { return this; }
+        if (nodeRealContains(this.node, this.savedNode)) {
+            return new TreeSitterNode(this.editor, p, this.direction, this.savedNode);
+        }
+        return new TreeSitterNode(this.editor, p, this.direction, this.node);
+    }    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
         switch (direct) {
             case 'left':
                 return this.leftward();
             case 'right':
                 return this.rightward();
-            case 'down': {
-                if (nodeRealContains(this.node, this.savedNode)) {
-                    const n = this.node.children.find(n => n.endIndex > this.savedNode.startIndex)
-                    if (n) { return new TreeSitterNode(this.editor, n, this.direction, this.savedNode); }
-                }
-                const collapse = this.direction == 'left' ? this.node.firstNamedChild || this.node.firstChild :
-                    this.node.lastNamedChild || this.node.lastChild;
-                if (collapse) { return new TreeSitterNode(this.editor, collapse, this.direction); }
-                return this;
-            }
-            case 'up': {
-                const p = this.node.parent;
-                if (!p) { return this; }
-                if (nodeRealContains(this.node, this.savedNode)) {
-                    return new TreeSitterNode(this.editor, p, this.direction, this.savedNode);
-                }
-                return new TreeSitterNode(this.editor, p, this.direction, this.node);
-
-            }
-
+            case 'down':
+                return this.downward();
+            case 'up':
+                return this.upward();
         }
     }
     copy(): mode.TextObj {

@@ -249,28 +249,32 @@ export class SelectedLines implements mode.BaseSelectedTextObj {
         const start = lineStartPosition(this.document, this.linestart);
         const end = lineEndPosition(this.document, this.lineend);
         return utils.asDirectionOf(start, end, this.isReversed ? 'left' : 'right');
-    }
-    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
+    }    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
         switch (direct) {
             case 'left':
                 return this.leftward();
             case 'right':
                 return this.rightward();
             case 'down':
-                const nextline = nextLine(this.document, this.lineend) || this.lineend;
-                return new SelectedLines(this.editor, nextline, nextline, false);
+                return this.downward();
             case 'up':
-                const prevline = prevLine(this.document, this.linestart) || this.linestart;
-                return new SelectedLines(this.editor, prevline, prevline, true);
+                return this.upward();
         }
     }
     leftward(): mode.SelectedTextObj {
         // For line mode, left/right do not move, just return this
         return this;
-    }
-    rightward(): mode.SelectedTextObj {
+    }    rightward(): mode.SelectedTextObj {
         // For line mode, left/right do not move, just return this
         return this;
+    }
+    downward(): mode.SelectedTextObj {
+        const nextline = nextLine(this.document, this.lineend) || this.lineend;
+        return new SelectedLines(this.editor, nextline, nextline, false);
+    }
+    upward(): mode.SelectedTextObj {
+        const prevline = prevLine(this.document, this.linestart) || this.linestart;
+        return new SelectedLines(this.editor, prevline, prevline, true);
     }
     copy() {
         const start = this.document.lineAt(this.linestart).range.start;

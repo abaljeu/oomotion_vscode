@@ -127,28 +127,32 @@ export class SelectedCharacters extends mode.BaseSelectedTextObj {
         const prev = utils.charPrevInline(this.document, this.sel.start);
         if (!prev) { return this; }
         return this.with(new Selection(this.sel.start, prev));
-    }
-
-    rightward(): mode.SelectedTextObj {
+    }    rightward(): mode.SelectedTextObj {
         const next = utils.charNextInline(this.document, this.sel.end);
         if (!next) { return this; }
         return this.with(new Selection(this.sel.end, next));
     }
 
-    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
+    downward(): mode.SelectedTextObj {
+        var pos = this.sel.active.with(undefined, this.savedColumn || this.sel.active.character);
+        pos = this.document.validatePosition(utils.charDown(this.document, pos) || pos);
+        return this.with(expandToChar(this.editor, new Selection(pos, pos)), this.savedColumn || this.sel.active.character);
+    }
+
+    upward(): mode.SelectedTextObj {
+        var position = this.sel.active.with(undefined, this.savedColumn || this.sel.active.character);
+        position = this.document.validatePosition(utils.charUp(this.document, position) || position);
+        return this.with(expandToRightChar(this.editor, new Selection(position, position)), this.savedColumn || this.sel.active.character);
+    }    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
         switch (direct) {
             case 'left':
                 return this.leftward();
             case 'right':
                 return this.rightward();
             case 'down':
-                var pos = this.sel.active.with(undefined, this.savedColumn || this.sel.active.character);
-                pos = this.document.validatePosition(utils.charDown(this.document, pos) || pos);
-                return this.with(expandToChar(this.editor, new Selection(pos, pos)), this.savedColumn || this.sel.active.character);
+                return this.downward();
             case 'up':
-                var position = this.sel.active.with(undefined, this.savedColumn || this.sel.active.character);
-                position = this.document.validatePosition(utils.charUp(this.document, position) || position);
-                return this.with(expandToRightChar(this.editor, new Selection(position, position)), this.savedColumn || this.sel.active.character)
+                return this.upward();
         }
     }
     copy(): mode.TextObj {

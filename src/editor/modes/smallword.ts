@@ -123,28 +123,30 @@ export class SelectedSmallWords extends mode.BaseSelectedTextObj {
     }
     get selection(): vscode.Selection {
         return this.sel;
-    }
-    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
+    }    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
         switch (direct) {
             case 'left':
                 return this.leftward();
             case 'right':
                 return this.rightward();
-            case 'down': {
-                const [sel, savedCol] = downOfObj(this.document, this.sel, this.savedColumn);
-                return this.with(sel, this.savedColumn || savedCol);
-            }
-            case 'up': {
-                const [sel, savedCol] = upOfObj(this.document, this.sel, this.savedColumn);
-                return this.with(sel, this.savedColumn || savedCol);
-            }
+            case 'down':
+                return this.downward();
+            case 'up':
+                return this.upward();
         }
     }
     leftward(): mode.SelectedTextObj {
         return this.with(leftOfObj(this.document, this.sel));
-    }
-    rightward(): mode.SelectedTextObj {
+    }    rightward(): mode.SelectedTextObj {
         return this.with(rightOfObj(this.document, this.sel));
+    }
+    downward(): mode.SelectedTextObj {
+        const [sel, savedCol] = downOfObj(this.document, this.sel, this.savedColumn);
+        return this.with(sel, this.savedColumn || savedCol);
+    }
+    upward(): mode.SelectedTextObj {
+        const [sel, savedCol] = upOfObj(this.document, this.sel, this.savedColumn);
+        return this.with(sel, this.savedColumn || savedCol);
     }
     copy(): mode.TextObj {
         return new mode.PlainText(this.document.getText(this.sel));

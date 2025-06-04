@@ -127,10 +127,16 @@ export class SelectedRange extends mode.BaseSelectedTextObj {
     
     leftward(): mode.SelectedTextObj {
         return this.active.leftward();
+    }    rightward(): mode.SelectedTextObj {
+        return this.active.rightward();
     }
 
-    rightward(): mode.SelectedTextObj {
-        return this.active.rightward();
+    downward(): mode.SelectedTextObj {
+        return this.active.downward();
+    }
+
+    upward(): mode.SelectedTextObj {
+        return this.active.upward();
     }
 
 }

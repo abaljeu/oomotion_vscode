@@ -36,11 +36,11 @@ export interface SelectedTextObj extends TextObj {
     moveActive(direct: Direction) : SelectedTextObj;
     addCursor(direct: Direction): SelectedTextObj | undefined;
     moveSwap(direct: DirectionHorizontal, count: number): [vscode.Range, string][];
-    easyMotionList(direct: DirectionHorizontal) : {tag: vscode.Selection, result: SelectedTextObj}[];
-
-    // Movement helper methods for subclasses - not part of public interface
+    easyMotionList(direct: DirectionHorizontal) : {tag: vscode.Selection, result: SelectedTextObj}[];    // Movement helper methods for subclasses - not part of public interface
      leftward(): SelectedTextObj;
      rightward(): SelectedTextObj;
+     downward(): SelectedTextObj;
+     upward(): SelectedTextObj;
 }
 
 export class PlainText extends String implements TextObj {
@@ -237,9 +237,9 @@ export abstract class BaseSelectedTextObj implements SelectedTextObj {
     abstract moveActive(direct: Direction): SelectedTextObj;
     abstract addCursor(direct: Direction): SelectedTextObj | undefined;
     abstract moveSwap(direct: DirectionHorizontal, count: number): [vscode.Range, string][];
-    abstract easyMotionList(direct: DirectionHorizontal): {tag: vscode.Selection, result: SelectedTextObj}[];
-
-    // Movement helper methods for subclasses - not part of public interface
+    abstract easyMotionList(direct: DirectionHorizontal): {tag: vscode.Selection, result: SelectedTextObj}[];    // Movement helper methods for subclasses - not part of public interface
     abstract leftward(): SelectedTextObj;
     abstract rightward(): SelectedTextObj;
+    abstract downward(): SelectedTextObj;
+    abstract upward(): SelectedTextObj;
 }
