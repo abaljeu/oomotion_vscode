@@ -212,3 +212,30 @@ export class SelectedObjGroup {
 export function partialRotateLeft<A, B>(arr: [A,B][]): [A, B][] {
     return arr.map(([a,b], i) => [a, arr[(i+1) % arr.length][1]]);
 }
+
+export abstract class BaseSelectedTextObj implements SelectedTextObj {
+    abstract get mode(): SelectionMode;
+    abstract get document(): vscode.TextDocument;
+    abstract get editor(): EditorManager;
+    abstract get selection(): vscode.Selection;
+    abstract move(direct: Direction): SelectedTextObj;
+    abstract copy(): TextObj;
+    abstract get content(): string;
+    abstract getIndentedText(indent: number): string;
+    abstract get direction(): DirectionHorizontal;
+    abstract get reversed(): SelectedTextObj;
+    abstract delete(range: ObjectRangeOption): vscode.Range;
+    abstract paste(direction: DirectionHorizontal, obj: TextObj[], edit: vscode.TextEditorEdit, range: ObjectRangeOption): void;
+    abstract insert(direction: DirectionHorizontal, edit: vscode.TextEditorEdit, range: ObjectRangeOption): [number, number];
+    abstract replace(obj: TextObj[]): [vscode.Range, string];
+    abstract findStartWith(direction: DirectionHorizontal, ch: string, select_mode: boolean): SelectedTextObj;
+    abstract findIdent(direction: DirectionHorizontal, select_mode: boolean): SelectedTextObj;
+    abstract moveActive(direct: Direction): SelectedTextObj;
+    abstract addCursor(direct: Direction): SelectedTextObj | undefined;
+    abstract moveSwap(direct: DirectionHorizontal, count: number): [vscode.Range, string][];
+    abstract easyMotionList(direct: DirectionHorizontal): {tag: vscode.Selection, result: SelectedTextObj}[];
+    
+    // Movement helper methods for subclasses - not part of public interface
+    abstract leftward(): SelectedTextObj;
+    abstract rightward(): SelectedTextObj;
+}

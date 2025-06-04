@@ -38,11 +38,12 @@ function positionMax(p1: vscode.Position, p2: vscode.Position) {
     if (p1.isAfter(p2)) { return p1; } else { return p2; }
 }
 
-export class SelectedRange implements mode.SelectedTextObj {
+export class SelectedRange extends mode.BaseSelectedTextObj {
     mode: mode.SelectionMode;
     active: mode.SelectedTextObj;
     anchor: mode.SelectedTextObj;
     constructor(mode: mode.SelectionMode, active: mode.SelectedTextObj, anchor: mode.SelectedTextObj) {
+        super();
         this.mode = mode;
         this.active = active;
         this.anchor = anchor;
@@ -123,6 +124,12 @@ export class SelectedRange implements mode.SelectedTextObj {
     findIdent(direction: mode.DirectionHorizontal, select_mode: boolean): mode.SelectedTextObj {
         if(!select_mode) { return this.active.findIdent(direction, false); }
         return new SelectedRange(this.mode, this.findIdent(direction, false), this.anchor);
+    }    leftward(): mode.SelectedTextObj {
+        return (this.active as mode.BaseSelectedTextObj).leftward();
+    }
+
+    rightward(): mode.SelectedTextObj {
+        return (this.active as mode.BaseSelectedTextObj).rightward();
     }
 
 }

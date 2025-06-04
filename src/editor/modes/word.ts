@@ -10,11 +10,12 @@ export const decorationtype = vscode.window.createTextEditorDecorationType({ bor
 export function selectionsToObjects(editor: EditorManager, sels: readonly vscode.Selection[]): mode.SelectedObjGroup {
     return new mode.SelectedObjGroup(sels.map(s => new SelectedWords(editor, expandToObj(editor.document, s))));
 }
-export class SelectedWords implements mode.SelectedTextObj {
+export class SelectedWords extends mode.BaseSelectedTextObj {
     editor: EditorManager;
     sel: vscode.Selection;
     savedColumn: number | undefined;
     constructor(editor: EditorManager, sel: vscode.Selection, savedColumn?: number) {
+        super();
         this.editor = editor;
         this.sel = sel;
         this.savedColumn = savedColumn;
@@ -125,9 +126,9 @@ export class SelectedWords implements mode.SelectedTextObj {
     move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
         switch (direct) {
             case 'left':
-                return this.with(leftOfObj(this.document, this.sel));
+                return this.leftward();
             case 'right':
-                return this.with(rightOfObj(this.document, this.sel));
+                return this.rightward();
             case 'down': {
                 const [sel, savedCol] = downOfObj(this.document, this.sel, this.savedColumn);
                 return this.with(sel, this.savedColumn || savedCol);
@@ -137,6 +138,12 @@ export class SelectedWords implements mode.SelectedTextObj {
                 return this.with(sel, this.savedColumn || savedCol);
             }
         }
+    }
+    leftward(): mode.SelectedTextObj {
+        return this.with(leftOfObj(this.document, this.sel));
+    }
+    rightward(): mode.SelectedTextObj {
+        return this.with(rightOfObj(this.document, this.sel));
     }
     copy(): mode.TextObj {
         return new mode.PlainText(this.document.getText(this.sel));

@@ -21,12 +21,13 @@ export function selectionsToObjects(editor: EditorManager, sels: readonly vscode
     return new mode.SelectedObjGroup(res);
 }
 
-export class TreeSitterNode implements mode.SelectedTextObj {
+export class TreeSitterNode extends mode.BaseSelectedTextObj {
     editor: EditorManager;
     node: SyntaxNode;
     direction: mode.DirectionHorizontal;
     savedNode: SyntaxNode;
     constructor(editor: EditorManager, node: SyntaxNode, direction: mode.DirectionHorizontal, savedNode?: SyntaxNode) {
+        super();
         this.editor = editor;
         this.node = node;
         this.savedNode = savedNode || node;
@@ -143,28 +144,35 @@ export class TreeSitterNode implements mode.SelectedTextObj {
     get selection(): vscode.Selection {
         return utils.asDirectionOf(asPosition(this.node.startPosition), asPosition(this.node.endPosition), this.direction);
     }
+
+    leftward(): mode.SelectedTextObj {
+        const ps = prevSibling(this.node);
+        if (!ps) { return this; }
+        if (nodeRealContains(this.node, this.savedNode)) {
+            return new TreeSitterNode(this.editor, ps, 'left', this.node);
+        }
+        const svd = this.savedNode;
+        const n = iterateLastChild(ps, n => n.startIndex <= svd.startIndex && !nodeContains(svd, n)) || ps;
+        return new TreeSitterNode(this.editor, n, 'left', this.savedNode);
+    }
+
+    rightward(): mode.SelectedTextObj {
+        const ns = nextSibling(this.node);
+        if (!ns) { return this; }
+        if (nodeRealContains(this.node, this.savedNode)) {
+            return new TreeSitterNode(this.editor, ns, 'left', this.node);
+        }
+        const svd = this.savedNode;
+        const n = iterateFirstChild(ns, n => n.endIndex >= svd.endIndex && !nodeContains(svd, n)) || ns;
+        return new TreeSitterNode(this.editor, n, 'right', this.savedNode);
+    }
+
     move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
         switch (direct) {
-            case 'left': {
-                const ps = prevSibling(this.node);
-                if (!ps) { return this; }
-                if (nodeRealContains(this.node, this.savedNode)) {
-                    return new TreeSitterNode(this.editor, ps, 'left', this.node);
-                }
-                const svd = this.savedNode;
-                const n = iterateLastChild(ps, n => n.startIndex <= svd.startIndex && !nodeContains(svd, n)) || ps;
-                return new TreeSitterNode(this.editor, n, 'left', this.savedNode);
-            }
-            case 'right': {
-                const ns = nextSibling(this.node);
-                if (!ns) { return this; }
-                if (nodeRealContains(this.node, this.savedNode)) {
-                    return new TreeSitterNode(this.editor, ns, 'left', this.node);
-                }
-                const svd = this.savedNode;
-                const n = iterateFirstChild(ns, n => n.endIndex >= svd.endIndex && !nodeContains(svd, n)) || ns;
-                return new TreeSitterNode(this.editor, n, 'right', this.savedNode);
-            }
+            case 'left':
+                return this.leftward();
+            case 'right':
+                return this.rightward();
             case 'down': {
                 if (nodeRealContains(this.node, this.savedNode)) {
                     const n = this.node.children.find(n => n.endIndex > this.savedNode.startIndex)

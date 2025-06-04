@@ -1,4 +1,3 @@
-
 import * as vscode from 'vscode'
 import { Selection } from 'vscode';
 import { EditorManager } from '../editordata';
@@ -254,8 +253,9 @@ export class SelectedLines implements mode.SelectedTextObj {
     move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
         switch (direct) {
             case 'left':
+                return this.leftward();
             case 'right':
-                return this;
+                return this.rightward();
             case 'down':
                 const nextline = nextLine(this.document, this.lineend) || this.lineend;
                 return new SelectedLines(this.editor, nextline, nextline, false);
@@ -263,6 +263,14 @@ export class SelectedLines implements mode.SelectedTextObj {
                 const prevline = prevLine(this.document, this.linestart) || this.linestart;
                 return new SelectedLines(this.editor, prevline, prevline, true);
         }
+    }
+    leftward(): mode.SelectedTextObj {
+        // For line mode, left/right do not move, just return this
+        return this;
+    }
+    rightward(): mode.SelectedTextObj {
+        // For line mode, left/right do not move, just return this
+        return this;
     }
     copy() {
         const start = this.document.lineAt(this.linestart).range.start;

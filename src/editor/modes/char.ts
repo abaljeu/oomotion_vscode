@@ -1,4 +1,3 @@
-
 import * as vscode from 'vscode'
 import { Selection } from 'vscode';
 import { EditorManager } from '../editordata';
@@ -26,11 +25,12 @@ function expandToRightChar(editor: EditorManager, sel: Selection): Selection {
     return sel;
 }
 
-export class SelectedCharacters implements mode.SelectedTextObj {
+export class SelectedCharacters extends mode.BaseSelectedTextObj {
     editor: EditorManager;
     sel: vscode.Selection;
     savedColumn: number | undefined;
     constructor(editor: EditorManager, sel: vscode.Selection, savedColumn?: number) {
+        super();
         this.editor = editor;
         this.sel = sel;
         this.savedColumn = savedColumn;
@@ -122,16 +122,25 @@ export class SelectedCharacters implements mode.SelectedTextObj {
     get selection(): vscode.Selection {
         return this.sel;
     }
+
+    leftward(): mode.SelectedTextObj {
+        const prev = utils.charPrevInline(this.document, this.sel.start);
+        if (!prev) { return this; }
+        return this.with(new Selection(this.sel.start, prev));
+    }
+
+    rightward(): mode.SelectedTextObj {
+        const next = utils.charNextInline(this.document, this.sel.end);
+        if (!next) { return this; }
+        return this.with(new Selection(this.sel.end, next));
+    }
+
     move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
         switch (direct) {
             case 'left':
-                const prev = utils.charPrevInline(this.document, this.sel.start);
-                if (!prev) { return this; }
-                return this.with(new Selection(this.sel.start, prev));
+                return this.leftward();
             case 'right':
-                const next = utils.charNextInline(this.document, this.sel.end);
-                if (!next) { return this; }
-                return this.with(new Selection(this.sel.end, next));
+                return this.rightward();
             case 'down':
                 var pos = this.sel.active.with(undefined, this.savedColumn || this.sel.active.character);
                 pos = this.document.validatePosition(utils.charDown(this.document, pos) || pos);
