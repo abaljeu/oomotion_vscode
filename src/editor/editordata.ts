@@ -104,10 +104,10 @@ export class EditorData {
 
     private set mode(mode: mode.SelectionMode) {
         if (this.state.name == 'NORMAL') {
-            this.editor.changeSelection(this.editor.collapseObjects(mode));
+            // this.editor.changeSelection(this.editor.collapseObjects(mode));
 
         } else if (this.state.name == 'SELECT') {
-            this.editor.changeSelection(this.editor.getTextObjects(mode).obj);
+            // this.editor.changeSelection(this.editor.getTextObjects(mode).obj);
         }
         this.updateDecoration(mode);
         this._mode = mode;

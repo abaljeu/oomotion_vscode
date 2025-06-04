@@ -142,19 +142,8 @@ export class SelectedCharacters extends mode.BaseSelectedTextObj {
     upward(): mode.SelectedTextObj {
         var position = this.sel.active.with(undefined, this.savedColumn || this.sel.active.character);
         position = this.document.validatePosition(utils.charUp(this.document, position) || position);
-        return this.with(expandToRightChar(this.editor, new Selection(position, position)), this.savedColumn || this.sel.active.character);
-    }    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
-        switch (direct) {
-            case 'left':
-                return this.leftward();
-            case 'right':
-                return this.rightward();
-            case 'down':
-                return this.downward();
-            case 'up':
-                return this.upward();
-        }
-    }
+        return this.with(expandToRightChar(this.editor, new Selection(position, position)), this.savedColumn || this.sel.active.character);    
+    }    
     copy(): mode.TextObj {
         return new mode.PlainText(this.document.getText(this.sel));
     }

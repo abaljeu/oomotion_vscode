@@ -72,12 +72,12 @@ export function isLineIndentOrUndent(doc: vscode.TextDocument, line:number) {
     return isLineIndent(doc, line) || isLineUnindent(doc, line);
 }
 
-export class SelectedLines implements mode.BaseSelectedTextObj {
+export class SelectedLines extends mode.BaseSelectedTextObj {
     editor: EditorManager;
     linestart: number;
     lineend: number;
-    isReversed: boolean;
-    constructor(editor: EditorManager, linestart: number, lineend: number, isrev: boolean) {
+    isReversed: boolean;    constructor(editor: EditorManager, linestart: number, lineend: number, isrev: boolean) {
+        super();
         this.editor = editor;
         this.linestart = linestart;
         this.lineend = lineend;
@@ -248,18 +248,7 @@ export class SelectedLines implements mode.BaseSelectedTextObj {
     get selection(): vscode.Selection {
         const start = lineStartPosition(this.document, this.linestart);
         const end = lineEndPosition(this.document, this.lineend);
-        return utils.asDirectionOf(start, end, this.isReversed ? 'left' : 'right');
-    }    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
-        switch (direct) {
-            case 'left':
-                return this.leftward();
-            case 'right':
-                return this.rightward();
-            case 'down':
-                return this.downward();
-            case 'up':
-                return this.upward();
-        }
+                return utils.asDirectionOf(start, end, this.isReversed ? 'left' : 'right');
     }
     leftward(): mode.SelectedTextObj {
         // For line mode, left/right do not move, just return this

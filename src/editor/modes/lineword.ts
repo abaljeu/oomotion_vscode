@@ -47,7 +47,7 @@ function nextTreeNode(doc: vscode.TextDocument, lineend: number): { start: numbe
     return expandToObj(doc, lineend, lineend);
 }
 
-export class SelectedLineWord extends line.SelectedLines implements mode.BaseSelectedTextObj {
+export class SelectedLineWord extends line.SelectedLines {
     constructor(editor: EditorManager, linestart: number, lineend: number, isrev: boolean) {
         
         super(editor, linestart, lineend, isrev)
@@ -108,25 +108,27 @@ export class SelectedLineWord extends line.SelectedLines implements mode.BaseSel
     }
 
     get reversed(): mode.SelectedTextObj {
-        return new SelectedLineWord(this.editor, this.linestart, this.lineend, !this.isReversed);
+        return new SelectedLineWord(this.editor, this.linestart, this.lineend, !this.isReversed);    }
+
+    leftward(): mode.SelectedTextObj {
+        return this;
     }
 
-    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
-        switch (direct) {
-            case 'left': return this;
-            case 'right': return this;
-            case 'up': {
-                const res = prevTreeNode(this.document, this.linestart);
-                if (!res) { return this; }
-                const { start, end } = res;
-                return new SelectedLineWord(this.editor, start, end, this.isReversed);
-            }
-            case 'down': {
-                const res = nextTreeNode(this.document, this.lineend);
-                if (!res) { return this; }
-                const { start, end } = res;
-                return new SelectedLineWord(this.editor, start, end, this.isReversed);
-            }
-        }
+    rightward(): mode.SelectedTextObj {
+        return this;
+    }
+
+    upward(): mode.SelectedTextObj {
+        const res = prevTreeNode(this.document, this.linestart);
+        if (!res) { return this; }
+        const { start, end } = res;
+        return new SelectedLineWord(this.editor, start, end, this.isReversed);
+    }
+
+    downward(): mode.SelectedTextObj {
+        const res = nextTreeNode(this.document, this.lineend);
+        if (!res) { return this; }
+        const { start, end } = res;
+        return new SelectedLineWord(this.editor, start, end, this.isReversed);
     }
 }

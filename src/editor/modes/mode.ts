@@ -221,8 +221,20 @@ export abstract class BaseSelectedTextObj implements SelectedTextObj {
     abstract get mode(): SelectionMode;
     abstract get document(): vscode.TextDocument;
     abstract get editor(): EditorManager;
-    abstract get selection(): vscode.Selection;
-    abstract move(direct: Direction): SelectedTextObj;
+    abstract get selection(): vscode.Selection;    // Concrete implementation that delegates to directional methods
+    move(direct: Direction): SelectedTextObj {
+        switch (direct) {
+            case 'left':
+                return this.leftward();
+            case 'right':
+                return this.rightward();
+            case 'down':
+                return this.downward();
+            case 'up':
+                return this.upward();
+        }
+    }
+
     abstract copy(): TextObj;
     abstract get content(): string;
     abstract getIndentedText(indent: number): string;

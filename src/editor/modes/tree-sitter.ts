@@ -182,19 +182,7 @@ export class TreeSitterNode extends mode.BaseSelectedTextObj {
         if (nodeRealContains(this.node, this.savedNode)) {
             return new TreeSitterNode(this.editor, p, this.direction, this.savedNode);
         }
-        return new TreeSitterNode(this.editor, p, this.direction, this.node);
-    }    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
-        switch (direct) {
-            case 'left':
-                return this.leftward();
-            case 'right':
-                return this.rightward();
-            case 'down':
-                return this.downward();
-            case 'up':
-                return this.upward();
-        }
-    }
+        return new TreeSitterNode(this.editor, p, this.direction, this.node);    }
     copy(): mode.TextObj {
         return this.toLines?.copy() || new mode.PlainText(this.document.getText(this.selection));
     }

@@ -122,19 +122,7 @@ export class SelectedSmallWords extends mode.BaseSelectedTextObj {
         return this.editor.document;
     }
     get selection(): vscode.Selection {
-        return this.sel;
-    }    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
-        switch (direct) {
-            case 'left':
-                return this.leftward();
-            case 'right':
-                return this.rightward();
-            case 'down':
-                return this.downward();
-            case 'up':
-                return this.upward();
-        }
-    }
+        return this.sel;    }
     leftward(): mode.SelectedTextObj {
         return this.with(leftOfObj(this.document, this.sel));
     }    rightward(): mode.SelectedTextObj {

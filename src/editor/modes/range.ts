@@ -82,12 +82,24 @@ export class SelectedRange extends mode.BaseSelectedTextObj {
     get selection(): vscode.Selection {
         const min = positionMin(this.active.selection.start, this.anchor.selection.start);
         const max = positionMax(this.active.selection.end, this.anchor.selection.end);
-        return utils.asDirectionOf(min, max, this.direction);
+        return utils.asDirectionOf(min, max, this.direction);    }
+
+    leftward(): mode.SelectedTextObj {
+        return this.active.move('left');
     }
 
-    move(direct: mode.Direction): mode.SelectedTextObj {
-        return this.active.move(direct);
+    rightward(): mode.SelectedTextObj {
+        return this.active.move('right');
     }
+
+    upward(): mode.SelectedTextObj {
+        return this.active.move('up');
+    }
+
+    downward(): mode.SelectedTextObj {
+        return this.active.move('down');
+    }
+
     copy(): mode.TextObj {
         return new mode.PlainText(this.document.getText(this.selection));
     }
@@ -122,21 +134,6 @@ export class SelectedRange extends mode.BaseSelectedTextObj {
         return new SelectedRange(this.mode, this.active.findStartWith(direction, ch, false), this.anchor);
     }    findIdent(direction: mode.DirectionHorizontal, select_mode: boolean): mode.SelectedTextObj {
         if(!select_mode) { return this.active.findIdent(direction, false); }
-        return new SelectedRange(this.mode, this.findIdent(direction, false), this.anchor);
-    }
+        return new SelectedRange(this.mode, this.findIdent(direction, false), this.anchor);    }
     
-    leftward(): mode.SelectedTextObj {
-        return this.active.leftward();
-    }    rightward(): mode.SelectedTextObj {
-        return this.active.rightward();
-    }
-
-    downward(): mode.SelectedTextObj {
-        return this.active.downward();
-    }
-
-    upward(): mode.SelectedTextObj {
-        return this.active.upward();
-    }
-
 }

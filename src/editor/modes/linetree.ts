@@ -76,7 +76,7 @@ function shrinkOnIndent(doc: vscode.TextDocument, linestart: number, lineend: nu
     }
 }
 
-export class SelectedLineTree extends line.SelectedLines implements mode.BaseSelectedTextObj {
+export class SelectedLineTree extends line.SelectedLines {
     constructor(editor: EditorManager, linestart: number, lineend: number, isrev: boolean) {
         
         super(editor, linestart, lineend, isrev)
@@ -122,39 +122,36 @@ export class SelectedLineTree extends line.SelectedLines implements mode.BaseSel
         const line = <SelectedLineTree>(utils.findNextObj(this, direction, x => x.content == this.content) || this);
         if (!select_mode) { return line; }
         return this.with(this.anchor, line.active);
-    }
-
-    get reversed(): mode.SelectedTextObj {
+    }    get reversed(): mode.SelectedTextObj {
         return new SelectedLineTree(this.editor, this.linestart, this.lineend, !this.isReversed);
     }
 
-    move(direct: ('left' | 'right') | ('up' | 'down')): mode.SelectedTextObj {
-        switch (direct) {
-            case 'up': {
-                const start_indent = this.document.lineAt(this.linestart).firstNonWhitespaceCharacterIndex;
-                const end_indent = this.document.lineAt(this.lineend).firstNonWhitespaceCharacterIndex;
-                const min_indent = (start_indent > end_indent ? end_indent : start_indent);
-                const { start ,end } = expandToObj(this.document, this.linestart, this.lineend, min_indent - this.editor.tabSize);
-                return new SelectedLineTree(this.editor, start, end, this.isReversed);
-            }
-            case 'down': {
-                const res = shrinkOnIndent(this.document, this.linestart, this.lineend, this.isReversed);
-                if (!res) { return this; }
-                const { start, end } = res;
-                return new SelectedLineTree(this.editor, start, end, this.isReversed);
-            }
-            case 'left': {
-                const res = prevTreeNode(this.document, this.linestart);
-                if (!res) { return this; }
-                const { start, end } = res;
-                return new SelectedLineTree(this.editor, start, end, this.isReversed);
-            }
-            case 'right': {
-                const res = nextTreeNode(this.document, this.lineend);
-                if (!res) { return this; }
-                const { start, end } = res;
-                return new SelectedLineTree(this.editor, start, end, this.isReversed);
-            }
-        }
+    leftward(): mode.SelectedTextObj {
+        const res = prevTreeNode(this.document, this.linestart);
+        if (!res) { return this; }
+        const { start, end } = res;
+        return new SelectedLineTree(this.editor, start, end, this.isReversed);
+    }
+
+    rightward(): mode.SelectedTextObj {
+        const res = nextTreeNode(this.document, this.lineend);
+        if (!res) { return this; }
+        const { start, end } = res;
+        return new SelectedLineTree(this.editor, start, end, this.isReversed);
+    }
+
+    upward(): mode.SelectedTextObj {
+        const start_indent = this.document.lineAt(this.linestart).firstNonWhitespaceCharacterIndex;
+        const end_indent = this.document.lineAt(this.lineend).firstNonWhitespaceCharacterIndex;
+        const min_indent = (start_indent > end_indent ? end_indent : start_indent);
+        const { start ,end } = expandToObj(this.document, this.linestart, this.lineend, min_indent - this.editor.tabSize);
+        return new SelectedLineTree(this.editor, start, end, this.isReversed);
+    }
+
+    downward(): mode.SelectedTextObj {
+        const res = shrinkOnIndent(this.document, this.linestart, this.lineend, this.isReversed);
+        if (!res) { return this; }
+        const { start, end } = res;
+        return new SelectedLineTree(this.editor, start, end, this.isReversed);
     }
 }
