@@ -50,10 +50,10 @@ export class EditorManager {
     }
     get options() { return this.editor.options; }
     set selectionDecoration(decorationtype: vscode.TextEditorDecorationType) {
-        this.editor.setDecorations(decorationtype, this.editor.selections);
+        // this.editor.setDecorations(decorationtype, this.editor.selections);
     }
     clearDecoration(decorationtype: vscode.TextEditorDecorationType) {
-        this.editor.setDecorations(decorationtype, []);
+        // this.editor.setDecorations(decorationtype, []);
     }
     get tabSize() {
         const ts = this.editor.options.tabSize || 4;
@@ -104,10 +104,10 @@ export class EditorData {
 
     private set mode(mode: mode.SelectionMode) {
         if (this.state.name == 'NORMAL') {
-            // this.editor.changeSelection(this.editor.collapseObjects(mode));
+            this.editor.changeSelection(this.editor.collapseObjects(mode));
 
         } else if (this.state.name == 'SELECT') {
-            // this.editor.changeSelection(this.editor.getTextObjects(mode).obj);
+            this.editor.changeSelection(this.editor.getTextObjects(mode).obj);
         }
         this.updateDecoration(mode);
         this._mode = mode;

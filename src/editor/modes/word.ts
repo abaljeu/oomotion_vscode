@@ -7,9 +7,12 @@ import { SelectedRange } from './range';
 
 export const name = "word";
 export const decorationtype = vscode.window.createTextEditorDecorationType({ border: "1px solid #964d4d;", fontWeight: "bold" });
-export function selectionsToObjects(editor: EditorManager, sels: readonly vscode.Selection[]): mode.SelectedObjGroup {
-    return new mode.SelectedObjGroup(sels.map(s => new SelectedWords(editor, expandToObj(editor.document, s))));
+
+export function selectionToObject(editor: EditorManager, s: vscode.Selection): SelectedWords {
+    return new SelectedWords(editor, expandToObj(editor.document, s));
 }
+
+export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
 export class SelectedWords extends mode.BaseSelectedTextObj {
     editor: EditorManager;
     sel: vscode.Selection;
@@ -121,8 +124,7 @@ export class SelectedWords extends mode.BaseSelectedTextObj {
         return this.editor.document;
     }
     get selection(): vscode.Selection {
-        return this.sel;
-    }
+        return this.sel;    }
     leftward(): mode.SelectedTextObj {
         return this.with(leftOfObj(this.document, this.sel));
     }

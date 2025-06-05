@@ -9,7 +9,16 @@ export type Direction = DirectionHorizontal | DirectionVertial;
 export interface SelectionMode {
     name: string;
     decorationtype: vscode.TextEditorDecorationType;
+    selectionToObject(editor: EditorManager, s: vscode.Selection): SelectedTextObj;
     selectionsToObjects(editor: EditorManager, sels: readonly vscode.Selection[]): SelectedObjGroup;
+}
+
+export function selectionsToObjectsHelper(
+    selectionToObject: (editor: EditorManager, s: vscode.Selection) => SelectedTextObj
+) {
+    return function(editor: EditorManager, sels: readonly vscode.Selection[]): SelectedObjGroup {
+        return new SelectedObjGroup(sels.map(s => selectionToObject(editor, s)));
+    };
 }
 
 export interface TextObj {
@@ -37,7 +46,8 @@ export interface SelectedTextObj extends TextObj {
     addCursor(direct: Direction): SelectedTextObj | undefined;
     moveSwap(direct: DirectionHorizontal, count: number): [vscode.Range, string][];
     easyMotionList(direct: DirectionHorizontal) : {tag: vscode.Selection, result: SelectedTextObj}[];    // Movement helper methods for subclasses - not part of public interface
-     leftward(): SelectedTextObj;
+     
+    leftward(): SelectedTextObj;
      rightward(): SelectedTextObj;
      downward(): SelectedTextObj;
      upward(): SelectedTextObj;

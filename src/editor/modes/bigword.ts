@@ -7,9 +7,12 @@ import { SelectedRange } from './range';
 
 export const name = "big-word";
 export const decorationtype = vscode.window.createTextEditorDecorationType({ border: "1px dashed #964d4d;", fontWeight: "bold" });
-export function selectionsToObjects(editor: EditorManager, sels: readonly vscode.Selection[]): mode.SelectedObjGroup {
-    return new mode.SelectedObjGroup(sels.map(s => new SelectedWords(editor, expandToObj(editor.document, s))));
+
+export function selectionToObject(editor: EditorManager, s: vscode.Selection): SelectedWords {
+    return new SelectedWords(editor, expandToObj(editor.document, s));
 }
+
+export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
 export class SelectedWords extends mode.BaseSelectedTextObj {
     editor: EditorManager;
     sel: vscode.Selection;

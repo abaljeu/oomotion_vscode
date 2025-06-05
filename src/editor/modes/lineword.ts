@@ -12,12 +12,13 @@ import { SelectedRange } from './range';
 
 export const name = "line-word";
 export const decorationtype = vscode.window.createTextEditorDecorationType({ border: "1px dashed #4d8a96;", fontWeight: "bold" });
-export function selectionsToObjects(editor: EditorManager, sels: readonly vscode.Selection[]): mode.SelectedObjGroup {
-    return new mode.SelectedObjGroup(sels.map(s => {
-        const {start, end} = expandToObj(editor.document, s.start.line, s.end.line);
-        return new SelectedLineWord(editor, start, end, s.isReversed)
-    }));
+
+export function selectionToObject(editor: EditorManager, s: vscode.Selection): SelectedLineWord {
+    const {start, end} = expandToObj(editor.document, s.start.line, s.end.line);
+    return new SelectedLineWord(editor, start, end, s.isReversed);
 }
+
+export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
 function expandToObj(doc: vscode.TextDocument, linestart: number, lineend: number): { start: number, end: number } {
     if(linestart > 0 && doc.lineAt(linestart).isEmptyOrWhitespace) { return expandToObj(doc, linestart - 1, lineend) }
     if(lineend < doc.lineCount - 1 && doc.lineAt(lineend).isEmptyOrWhitespace) { return expandToObj(doc, linestart, lineend + 1) }

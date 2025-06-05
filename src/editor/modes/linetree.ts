@@ -12,12 +12,13 @@ import { SelectedRange } from './range';
 
 export const name = "line-tree";
 export const decorationtype = vscode.window.createTextEditorDecorationType({ border: "1px dashed #aba246;", fontWeight: "bold" });
-export function selectionsToObjects(editor: EditorManager, sels: readonly vscode.Selection[]): mode.SelectedObjGroup {
-    return new mode.SelectedObjGroup(sels.map(s => {
-        const {start, end} = expandToObj(editor.document, s.start.line, s.end.line);
-        return new SelectedLineTree(editor, start, end, s.isReversed)
-    }));
+
+export function selectionToObject(editor: EditorManager, s: vscode.Selection): SelectedLineTree {
+    const {start, end} = expandToObj(editor.document, s.start.line, s.end.line);
+    return new SelectedLineTree(editor, start, end, s.isReversed);
 }
+
+export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
 function expandToObj(doc: vscode.TextDocument, linestart: number, lineend: number, min_indent?: number): { start: number, end: number } {
     const start_indent = doc.lineAt(linestart).firstNonWhitespaceCharacterIndex;
     const end_indent = doc.lineAt(lineend).firstNonWhitespaceCharacterIndex;

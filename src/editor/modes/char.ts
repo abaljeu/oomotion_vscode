@@ -6,9 +6,12 @@ import * as utils from '../../utils';
 
 export const name = "char";
 export const decorationtype = vscode.window.createTextEditorDecorationType({ border: "1px solid #999999;", fontWeight: "bold" });
-export function selectionsToObjects(editor: EditorManager, sels: readonly vscode.Selection[]): mode.SelectedObjGroup {
-    return new mode.SelectedObjGroup(sels.map(s => new SelectedCharacters(editor, expandToChar(editor, s))));
+
+export function selectionToObject(editor: EditorManager, s: vscode.Selection): SelectedCharacters {
+    return new SelectedCharacters(editor, expandToChar(editor, s));
 }
+
+export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
 
 function expandToChar(editor: EditorManager, sel: Selection): Selection {
     if (sel.isEmpty) {
@@ -127,7 +130,8 @@ export class SelectedCharacters extends mode.BaseSelectedTextObj {
         const prev = utils.charPrevInline(this.document, this.sel.start);
         if (!prev) { return this; }
         return this.with(new Selection(this.sel.start, prev));
-    }    rightward(): mode.SelectedTextObj {
+    }    
+    rightward(): mode.SelectedTextObj {
         const next = utils.charNextInline(this.document, this.sel.end);
         if (!next) { return this; }
         return this.with(new Selection(this.sel.end, next));

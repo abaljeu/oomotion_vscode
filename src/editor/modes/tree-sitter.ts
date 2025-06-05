@@ -11,15 +11,15 @@ import { SelectedRange } from './range';
 export const name = "tree-sitter";
 
 export const decorationtype = vscode.window.createTextEditorDecorationType({ border: "1px solid #aba246;", fontWeight: "bold" });
-export function selectionsToObjects(editor: EditorManager, sels: readonly vscode.Selection[]): mode.SelectedObjGroup {
-    const res = sels.map(s => {
-        const tree = extension.globalData.tree.getTree(editor.document.fileName)
-            ?.rootNode.descendantForPosition(asPoint(s.start), asPoint(s.end));
-        if (!tree) { throw "tree-sitter not available for this document."; }
-        return new TreeSitterNode(editor, tree, s.isReversed ? 'left' : 'right');
-    });
-    return new mode.SelectedObjGroup(res);
+
+export function selectionToObject(editor: EditorManager, s: vscode.Selection): TreeSitterNode {
+    const tree = extension.globalData.tree.getTree(editor.document.fileName)
+        ?.rootNode.descendantForPosition(asPoint(s.start), asPoint(s.end));
+    if (!tree) { throw "tree-sitter not available for this document."; }
+    return new TreeSitterNode(editor, tree, s.isReversed ? 'left' : 'right');
 }
+
+export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
 
 export class TreeSitterNode extends mode.BaseSelectedTextObj {
     editor: EditorManager;

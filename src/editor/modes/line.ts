@@ -9,9 +9,12 @@ import { max } from 'lodash';
 
 export const name = "line";
 export const decorationtype = vscode.window.createTextEditorDecorationType({ border: "1px solid #4d8a96;", fontWeight: "bold" });
-export function selectionsToObjects(editor: EditorManager, sels: readonly vscode.Selection[]): mode.SelectedObjGroup {
-    return new mode.SelectedObjGroup(sels.map(s => new SelectedLines(editor, s.start.line, s.end.line, s.isReversed)));
+
+export function selectionToObject(editor: EditorManager, s: vscode.Selection): SelectedLines {
+    return new SelectedLines(editor, s.start.line, s.end.line, s.isReversed);
 }
+
+export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
 
 
 function expandToLine(doc: vscode.TextDocument, sel: Selection): Selection {
@@ -76,7 +79,8 @@ export class SelectedLines extends mode.BaseSelectedTextObj {
     editor: EditorManager;
     linestart: number;
     lineend: number;
-    isReversed: boolean;    constructor(editor: EditorManager, linestart: number, lineend: number, isrev: boolean) {
+    isReversed: boolean;    
+    constructor(editor: EditorManager, linestart: number, lineend: number, isrev: boolean) {
         super();
         this.editor = editor;
         this.linestart = linestart;
@@ -253,7 +257,8 @@ export class SelectedLines extends mode.BaseSelectedTextObj {
     leftward(): mode.SelectedTextObj {
         // For line mode, left/right do not move, just return this
         return this;
-    }    rightward(): mode.SelectedTextObj {
+    }    
+    rightward(): mode.SelectedTextObj {
         // For line mode, left/right do not move, just return this
         return this;
     }

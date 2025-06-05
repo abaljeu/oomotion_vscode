@@ -8,9 +8,12 @@ import lodash from 'lodash';
 
 export const name = "small-word";
 export const decorationtype = vscode.window.createTextEditorDecorationType({ border: "2px dotted #c91010;",  fontWeight: "bold" });
-export function selectionsToObjects(editor: EditorManager, sels: readonly vscode.Selection[]): mode.SelectedObjGroup {
-    return new mode.SelectedObjGroup(sels.map(s => new SelectedSmallWords(editor, expandToObj(editor.document, s))));
+
+export function selectionToObject(editor: EditorManager, s: vscode.Selection): SelectedSmallWords {
+    return new SelectedSmallWords(editor, expandToObj(editor.document, s));
 }
+
+export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
 export class SelectedSmallWords extends mode.BaseSelectedTextObj {
     editor: EditorManager;
     sel: vscode.Selection;
