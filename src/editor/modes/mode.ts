@@ -10,15 +10,14 @@ export interface SelectionMode {
     name: string;
     decorationtype: vscode.TextEditorDecorationType;
     selectionToObject(editor: EditorManager, s: vscode.Selection): SelectedTextObj;
-    selectionsToObjects(editor: EditorManager, sels: readonly vscode.Selection[]): SelectedObjGroup;
 }
 
-export function selectionsToObjectsHelper(
-    selectionToObject: (editor: EditorManager, s: vscode.Selection) => SelectedTextObj
-) {
-    return function(editor: EditorManager, sels: readonly vscode.Selection[]): SelectedObjGroup {
-        return new SelectedObjGroup(sels.map(s => selectionToObject(editor, s)));
-    };
+export function selectionsToObjects(
+    mode: SelectionMode,
+    editor: EditorManager, 
+    sels: readonly vscode.Selection[]
+): SelectedObjGroup {
+    return new SelectedObjGroup(sels.map(s => mode.selectionToObject(editor, s)));
 }
 
 export interface TextObj {

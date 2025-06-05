@@ -19,7 +19,7 @@ export function selectionToObject(editor: EditorManager, s: vscode.Selection): T
     return new TreeSitterNode(editor, tree, s.isReversed ? 'left' : 'right');
 }
 
-export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
+
 
 export class TreeSitterNode extends mode.BaseSelectedTextObj {
     editor: EditorManager;

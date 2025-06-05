@@ -18,7 +18,7 @@ export function selectionToObject(editor: EditorManager, s: vscode.Selection): S
     return new SelectedLineWord(editor, start, end, s.isReversed);
 }
 
-export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
+
 function expandToObj(doc: vscode.TextDocument, linestart: number, lineend: number): { start: number, end: number } {
     if(linestart > 0 && doc.lineAt(linestart).isEmptyOrWhitespace) { return expandToObj(doc, linestart - 1, lineend) }
     if(lineend < doc.lineCount - 1 && doc.lineAt(lineend).isEmptyOrWhitespace) { return expandToObj(doc, linestart, lineend + 1) }

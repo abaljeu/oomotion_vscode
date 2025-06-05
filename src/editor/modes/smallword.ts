@@ -13,7 +13,7 @@ export function selectionToObject(editor: EditorManager, s: vscode.Selection): S
     return new SelectedSmallWords(editor, expandToObj(editor.document, s));
 }
 
-export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
+
 export class SelectedSmallWords extends mode.BaseSelectedTextObj {
     editor: EditorManager;
     sel: vscode.Selection;

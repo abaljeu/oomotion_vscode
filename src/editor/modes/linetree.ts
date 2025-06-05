@@ -17,8 +17,6 @@ export function selectionToObject(editor: EditorManager, s: vscode.Selection): S
     const {start, end} = expandToObj(editor.document, s.start.line, s.end.line);
     return new SelectedLineTree(editor, start, end, s.isReversed);
 }
-
-export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
 function expandToObj(doc: vscode.TextDocument, linestart: number, lineend: number, min_indent?: number): { start: number, end: number } {
     const start_indent = doc.lineAt(linestart).firstNonWhitespaceCharacterIndex;
     const end_indent = doc.lineAt(lineend).firstNonWhitespaceCharacterIndex;

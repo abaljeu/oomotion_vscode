@@ -28,16 +28,17 @@ export class EditorManager {
         this.editor.revealRange(sels[0]);
         this.changeExpected = true;
     }
+ 
     getTextObjects(selmode: mode.SelectionMode) {
         if (this.objcache && this.objcache.selectionsMatch(this.editor, selmode)) {
             return { obj: this.objcache, changed: false };
         }
         const lastobj = this.objcache;
-        this.objcache = selmode.selectionsToObjects(this, this.editor.selections);
+        this.objcache = mode.selectionsToObjects(selmode, this, this.editor.selections);
         return { obj: this.objcache, changed: !lastobj || !lastobj.rangeMatch(this.editor.selections) }
     }
     collapseObjects(selmode: mode.SelectionMode) {
-        return selmode.selectionsToObjects(this, this.editor.selections.map(x => new vscode.Selection(x.active, x.active)));
+        return mode.selectionsToObjects(selmode, this, this.editor.selections.map(x => new vscode.Selection(x.active, x.active)));
     }
     get document() {
         return this.editor.document;

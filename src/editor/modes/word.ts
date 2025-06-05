@@ -11,8 +11,6 @@ export const decorationtype = vscode.window.createTextEditorDecorationType({ bor
 export function selectionToObject(editor: EditorManager, s: vscode.Selection): SelectedWords {
     return new SelectedWords(editor, expandToObj(editor.document, s));
 }
-
-export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
 export class SelectedWords extends mode.BaseSelectedTextObj {
     editor: EditorManager;
     sel: vscode.Selection;

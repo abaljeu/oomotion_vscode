@@ -14,8 +14,6 @@ export function selectionToObject(editor: EditorManager, s: vscode.Selection): S
     return new SelectedLines(editor, s.start.line, s.end.line, s.isReversed);
 }
 
-export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
-
 
 function expandToLine(doc: vscode.TextDocument, sel: Selection): Selection {
     if (sel.isReversed) {

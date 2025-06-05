@@ -11,8 +11,6 @@ export function selectionToObject(editor: EditorManager, s: vscode.Selection): S
     return new SelectedCharacters(editor, expandToChar(editor, s));
 }
 
-export const selectionsToObjects = mode.selectionsToObjectsHelper(selectionToObject);
-
 function expandToChar(editor: EditorManager, sel: Selection): Selection {
     if (sel.isEmpty) {
         const pos = utils.charPrevInline(editor.document, sel.active) || utils.charNextInline(editor.document, sel.active) || sel.active;
