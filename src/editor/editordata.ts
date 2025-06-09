@@ -49,12 +49,29 @@ export class EditorManager {
         this.editor.revealRange(this.editor.selections[0]);
         this.changeExpected = true;
     }
-    get options() { return this.editor.options; }
-    set selectionDecoration(decorationtype: vscode.TextEditorDecorationType) {
-        // this.editor.setDecorations(decorationtype, this.editor.selections);
+    get options() { return this.editor.options; }    set selectionDecoration(decorationtype: vscode.TextEditorDecorationType) {
+        try {
+            const extraSelections = [];
+            if (this.objcache) {
+                for (const obj of this.objcache.arr) {
+                    try {
+                        const leftObj = obj.leftward();
+                        const rightObj = obj.rightward();
+                        extraSelections.push(leftObj.selection, rightObj.selection);
+                    } catch (error) {
+                        console.error('Error computing prospective selections:', error);
+                    }
+                }
+            }
+            this.editor.setDecorations(decorationtype, [...this.editor.selections, ...extraSelections]);
+        } catch (error) {
+            console.error('Error in selectionDecoration setter:', error);
+            // Fallback to basic behavior
+            this.editor.setDecorations(decorationtype, this.editor.selections);
+        }
     }
     clearDecoration(decorationtype: vscode.TextEditorDecorationType) {
-        // this.editor.setDecorations(decorationtype, []);
+        this.editor.setDecorations(decorationtype, []);
     }
     get tabSize() {
         const ts = this.editor.options.tabSize || 4;

@@ -163,8 +163,9 @@ export const packagegen = () => {
 			key: [['space h', 'space h']]
 		}
 	].flatMap(x => {
-		return x.key.map(k => ({ "command": x.command, "key": k[0], "mac": k[1], "when": `editorTextFocus && oomotion-vscode.state == NORMAL || editorTextFocus && oomotion-vscode.state == EXTEND`}))
-	})
+		return x.key.map(k => ({ "command": x.command, "key": k[0], "mac": k[1], 
+			"when": `editorTextFocus && oomotion-vscode.state == NORMAL || editorTextFocus && oomotion-vscode.state == EXTEND`}));
+	});
 
 	const additional = [];
 	// For OOMotion architecture and codebase documentation see: docs/oomotion_overview.md
