@@ -12,14 +12,16 @@
 				"reveal": "never"
 			},
 			"group": {
-				"kind": "build",
-				"isDefault": true
+				"kind": "build"
 			}
 		},
 		{
 			"type": "npm",
 			"script": "compile",
-			"group": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
 			"problemMatcher": [],
 			"label": "npm: compile",
 			"detail": "tsc -p ./"

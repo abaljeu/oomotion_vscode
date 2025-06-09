@@ -145,10 +145,13 @@ export class EditorData {
             this.editor.options.cursorStyle = vscode.TextEditorCursorStyle.Line;
             this.editor.options.lineNumbers = vscode.TextEditorLineNumbersStyle.Relative;
             if (changeSelection) { this.mode = this._mode; }
+            this.updateStatusBar();
         } else {
             this._state = { name, numarg: undefined };
             this.editor.options.cursorStyle = vscode.TextEditorCursorStyle.Block;
             this.editor.options.lineNumbers = vscode.TextEditorLineNumbersStyle.Relative;
+            if (changeSelection) { this.mode = this._mode; }
+            this.updateStatusBar();
         }
         vscode.commands.executeCommand("setContext", "oomotion-vscode.state", name);
     }

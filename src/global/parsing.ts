@@ -159,12 +159,12 @@ export class TreeData {
         if (edit.contentChanges.length === 0) { return; }
 
         for (const e of edit.contentChanges) {
-            const startIndex = e.rangeOffset
-            const oldEndIndex = e.rangeOffset + e.rangeLength
-            const newEndIndex = e.rangeOffset + e.text.length
-            const startPos = edit.document.positionAt(startIndex)
-            const oldEndPos = edit.document.positionAt(oldEndIndex)
-            const newEndPos = edit.document.positionAt(newEndIndex)
+            const startIndex = e.rangeOffset;
+            const oldEndIndex = e.rangeOffset + e.rangeLength;
+            const newEndIndex = e.rangeOffset + e.text.length;
+            const startPos = edit.document.positionAt(startIndex);
+            const oldEndPos = edit.document.positionAt(oldEndIndex);
+            const newEndPos = edit.document.positionAt(newEndIndex);
             const startPosition = asPoint(startPos);
             const oldEndPosition = asPoint(oldEndPos);
             const newEndPosition = asPoint(newEndPos);
