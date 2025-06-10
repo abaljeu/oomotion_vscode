@@ -1,14 +1,15 @@
 # Oomotion Vscode
 
-A textobject-oriented vscode keymap. Inspired by vim, kakoune and helix.
+A textobject-oriented vscode keymap. It provides modal text editing, inspired by vim, kakoune and helix.  And on top of that it implements a unique and intuitive Scope-driven (object-oriented) motion system.
 
 ![example.gif](https://raw.githubusercontent.com/DnailZ/oomotion_vscode/main/example.gif)
 
-# Modes
+# Scopes
 
-Different from vim, oomotion modes refer to textobject selection & navigation mode. In each mode, your cursor will always select a specific kind of object and all navigations are based on that textobject. For example, in `word` mode, your cursor always selects a word in your document and you can use `hl` to navigate the previous/next word. And in `line` mode, your cursor always selects a line and you can use `jk` to navigate the previous/next line.
+Many of oomotions move and change operations apply to the current scope.
+are a unique refer to textobject selection & navigation mode. In each mode, your cursor will always select a specific kind of object and all navigations are based on that textobject. For example, in `word` mode, your cursor always selects a word in your document and you can use `hl` to navigate the previous/next word. And in `line` mode, your cursor always selects a line and you can use `jk` to navigate the previous/next line.
 
-The following is all modes supported by current version of oomotion:
+The following is all scopes supported by current version of oomotion:
 
 * `character`: Select & navigate by a single character each time.
 * `word`: Select & navigate by a word `[\p{L}\p{N}_@$#]+`  or consecutive symbols `[\p{S}\p{P}\p{M}]+` or a single delimiter `[()[]{}<>,;'"]` each time. For example, `let b_ne = !(a.b != c)` contains words `let`, `b_ne`, `=`, `!`, `(`, `a`, `.`, `b` `!=`, `c`, `)`.
@@ -28,37 +29,25 @@ Each mode has a unique colored box that highlights your textobject selection.
 * `tree-sitter`: : ![#aba246](https://via.placeholder.com/15/aba246/aba246.png) yellow solid box 
 * `line-tree`: : ![#aba246](https://via.placeholder.com/15/aba246/aba246.png) yellow dashed box 
 
-# States
+# Modes
 
-Oomotion states is similar to vim's modes. There are three states available:
+Oomotion modes is similar to vim's modes. There are three modes available:
 
 * `INSERT`: Insert text through keyboard.
 * `NORMAL`: All keyboard inputs are considered commands. Used for navigation and editing.
 * `SELECT`: All keyboard inputs are considered commands. Select multiple textobjects using navigation keys.
 
-Each state has a unique cursor style as follows.
+Each mode has a unique cursor style as follows.
 
 * `INSERT`: Thin line cursor
 * `NORMAL`: Thick line cursor
 * `SELECT`: Block cursor
 
-You can also view the current state and mode on vscode's status bar.
+You can also view the current mode and mode on vscode's status bar.
 
 # Keymaps
 
 Oomotion supports a range of keymaps. You can view & edit most of them on [VS Code's Keyboard Shortcuts editor](https://code.visualstudio.com/docs/getstarted/keybindings).
-
-## From `NORMAL` State
-
-* `v` : enter `SELECT` state. 
-
-## From `INSERT` State
-
-* `j k` : return to `NORMAL` state. 
-
-## From `SELECT` State
-
-* `Esc` : return to `NORMAL` state. 
 
 ## Switch Modes
 
@@ -69,6 +58,18 @@ Oomotion supports a range of keymaps. You can view & edit most of them on [VS Co
 * `x`: enter `line` mode.
 * `t`: enter `tree-sitter` mode.
 * `shift+t`: enter `line-tree` mode.
+
+### From `NORMAL` Mode
+
+* `v` : enter `SELECT` mode. 
+
+### From `INSERT` Mode
+
+* `j k` : return to `NORMAL` mode. 
+
+### From `SELECT` Mode
+
+* `Esc` : return to `NORMAL` mode. 
 
 ## Navigation
 
@@ -124,7 +125,7 @@ Add new cursors.
 
 ## Editing
 
-Enter `INSERT` state.
+Enter `INSERT` mode.
 
 * `i`: Insert at left of selection.
 * `a`: Insert at right of selection.
