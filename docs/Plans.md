@@ -49,62 +49,21 @@
   correction
 * [ ] Date:   May 27 15:26 54722bc4e9ac2197a1cc74fbf7ba1edd95b31bf6
   Implement visible j for the jk modeswap.
-* [x] Date:   May 27 15:07 229ee6c9da633cd9a8c876f06d5a2f3748750f21
+* [ ] Date:   May 27 15:07 229ee6c9da633cd9a8c876f06d5a2f3748750f21
   Output formatted package.json
-* [x] Date:   May 27 14:58 736c4e5586913898b6c98665cf287771a79464f8
+* [ ] Date:   May 27 14:58 736c4e5586913898b6c98665cf287771a79464f8
   Profile-isolation for debugging.
 * [ ] Date:   May 27 13:45 995bf2eb38af1ba5b446949b2c05c73b71083f86
   Remove circular dependencies by separating out action, actionList and types.ts.
-* [x] Date:   May 27 13:09 8fbe09ecb2a06530e450aa6bfd6a3d8037ab6cf5
+* [ ] Date:   May 27 13:09 8fbe09ecb2a06530e450aa6bfd6a3d8037ab6cf5
   Isolated launch environment
 * [ ] Date:   May 27 12:39 4195992af3a2b4108bc693034dab030ad9600384
   BUILD isnt quite correct as we have a dependency of vscode.  So
   currently to build the package-json, you have to use VSCode F5.
-* [x] Date:   May 27 12:30 144de6e346147c2affa43a8ff8d2df396db3c28e
+* [ ] Date:   May 27 12:30 144de6e346147c2affa43a8ff8d2df396db3c28e
   Improving json settings.
 
-## From Before
+## Original
 
-* [ ] Date:   Dec 27 15:31 c5f5136c8b284b82701fb9b745e219069c118057
+* Date:   Dec 27 2024 15:31 c5f5136c8b284b82701fb9b745e219069c118057
   0.0.3
-* [ ] Date:   Dec 27 15:15 b80dac428ab57869b5af247ed7edc955a2ab226e
-  0.0.3
-* [ ] Date:   Dec 17 12:09 e830500047594e3ce79be2a82f6b475f8363d4a0
-  Merge pull request #16 from thuris/patch-1
-
-Update README.md
-
-* [ ] Date:   Dec 17 12:09 c8d4f1c7520d61760f8a691b36ff92441031424c
-  Merge pull request #18 from jkelleyrtp/jk/fix-jump-file
-
-Fix file jumping into undefined editors.
-
-* [ ] Date:   Dec 17 12:01 6cc5035556dc8dafdc458c87d677274b9fd45b6d
-  Update README.md
-* [ ] Date:   Feb 15 05:32 7f46c6a25000bc512b3836c222d705171a015498
-  Update README.md
-* [ ] Date:   Feb 15 05:26 75c110dd97ec90b7a2ae1da49d70c15c5afcd845
-  Update README.md
-* [ ] Date:   Jul 1 13:35 3a7670bfab8a8861212e97d19ac71e7f1242a111
-  Undo some extra handling
-* [ ] Date:   Jul 1 13:34 082cd8ea2dbf775b48981fccfae26598e38c4495
-  Fix file jumping
-* [ ] Date:   Jan 25 10:42 7fd859669ece40ec74fe9f1a2c6ccfac2c10ebbb
-  Update README.md
-
-Makes use of "state" vs "mode" consistent, and clarifies how to switch between states.
-
-* [ ] Date:   Nov 3 03:47 5bf85892790bfd66311a646c423c3ef301baa89c
-  Make j k configurable.
-* [ ] Date:   Nov 3 03:07 414030cfc4f31373cc9d88d0efc52a4c06b59454
-  State change commands.
-* [ ] Date:   Oct 11 15:11 0997069667e594e2db90e7d39cd71a2626794acc
-  Fix bugs when user use mouse.
-* [ ] Date:   Sep 13 00:32 598edd0c442f7648e542d7ff6cf351c5058264a9
-  Optimize `Move Up/Down` in `word` mode. Add a icon and keywords
-* [ ] Date:   Sep 10 22:21 2c8c464642db7f538b9d98f6888776ae49ddf28c
-  Add a gif image to README.md.
-* [ ] Date:   Sep 10 22:19 8ec765bfc404393e60ee94add033b527225039e6
-  Add a large git image manually.
-* [X] Date:   Sep 10 22:14 3730a7ac98a2a10dfe9f66d5bf6f45dac99a0453
-  initial commit
